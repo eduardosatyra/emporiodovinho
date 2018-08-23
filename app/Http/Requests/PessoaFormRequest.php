@@ -3,8 +3,9 @@
 namespace emporiodovinho\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use emporiodovinho\Http\Requests\Request;
 
-class ClientesFormRequest extends FormRequest
+class PessoaFormRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +14,7 @@ class ClientesFormRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +25,11 @@ class ClientesFormRequest extends FormRequest
     public function rules()
     {
         return [
-            //
-        ];
+            'nome'=>'required|max:100',
+            'tipo_documento'=>'max:20',
+            'num_doc'=> 'max:20',
+            'endereco'=> 'max:100',
+            'telefone'=> 'max:20',       ];
+            'email'=> 'max:50'
     }
 }
