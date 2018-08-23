@@ -91,8 +91,8 @@
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="estoque/produto"><i class="fa fa-circle-o"></i> Produtos</a></li>
-                <li><a href="estoque/categoria"><i class="fa fa-circle-o"></i> Categorias</a></li>
+                <li><a href="/estoque/produto"><i class="fa fa-circle-o"></i> Produtos</a></li>
+                <li><a href="/estoque/categoria"><i class="fa fa-circle-o"></i> Categorias</a></li>
               </ul>
             </li>
             
@@ -103,8 +103,8 @@
                  <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="compras/entrada"><i class="fa fa-circle-o"></i> Entradas</a></li>
-                <li><a href="compras/fornecedor"><i class="fa fa-circle-o"></i> Fornecedores</a></li>
+                <li><a href="/compras/entrada"><i class="fa fa-circle-o"></i> Entradas</a></li>
+                <li><a href="/compras/fornecedor"><i class="fa fa-circle-o"></i> Fornecedores</a></li>
               </ul>
             </li>
             <li class="treeview">
@@ -114,8 +114,8 @@
                  <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="vendas/venda"><i class="fa fa-circle-o"></i> Vendas</a></li>
-                <li><a href="vendas/cliente"><i class="fa fa-circle-o"></i> Clientes</a></li>
+                <li><a href="/venda/venda"><i class="fa fa-circle-o"></i> Vendas</a></li>
+                <li><a href="/venda/cliente"><i class="fa fa-circle-o"></i> Clientes</a></li>
               </ul>
             </li>
                        
