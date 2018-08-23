@@ -29,7 +29,8 @@ class PessoaFormRequest extends FormRequest
             'tipo_documento'=>'max:20',
             'num_doc'=> 'max:20',
             'endereco'=> 'max:100',
-            'telefone'=> 'max:20',       ];
-            'email'=> 'max:50'
+            'telefone'=> 'max:20',       
+            'email'=> 'max:50',
+            ];
     }
 }

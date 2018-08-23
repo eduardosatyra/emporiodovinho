@@ -60,8 +60,7 @@ class ClienteController extends Controller
     }
 
     public function update(PessoaFormRequest $request, $id){
-    	$pessoa=Pessoa::findOrFail($id);
-    	$pessoa = new Pessoa;
+    	$pessoa=Pessoa::findOrFail($id);    	
     	$pessoa->tipo_pessoa='Cliente';
     	$pessoa->nome=$request->get('nome');
     	$pessoa->tipo_documento=$request->get('tipo_documento');
@@ -69,7 +68,6 @@ class ClienteController extends Controller
     	$pessoa->endereco=$request->get('endereco');
     	$pessoa->telefone=$request->get('telefone');
     	$pessoa->email=$request->get('email');
-    	//$categoria->condicao=$request->get('condicao');
     	$pessoa->update();
     	return Redirect::to('venda/cliente');
     }
