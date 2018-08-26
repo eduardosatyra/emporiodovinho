@@ -2,7 +2,7 @@
 @section('conteudo')
 <div class="row">
 		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-			<h3>Nova Entrada</h3>
+			<h3>Nova Venda</h3>
 			@if (count($errors)>0)
 			<div class="alert alert-danger">
 				<ul>
@@ -15,7 +15,7 @@
 		</div>
 	</div>
 
-			{!!Form::open(array('url'=>'compra/entrada','method'=>'POST','autocomplete'=>'off'))!!}
+			{!!Form::open(array('url'=>'venda/venda','method'=>'POST','autocomplete'=>'off'))!!}
             {{Form::token()}}
            
 
@@ -23,9 +23,9 @@
             	
             	<div class="col-lg-12 col-sm-12 col-xs-12">
 	            	<div class="form-group">
-	            	<label for="nome">Fornecedor</label>
+	            	<label for="nome">Cliente</label>
 	            	
-                        <select name="id_fornecedor" id="id_fornecedor" class="form-control selectpicker" data-live-search="true">
+                        <select name="id_cliente" id="id_cliente" class="form-control selectpicker" data-live-search="true">
                               @foreach($pessoas as $pes)
                               <option value="{{$pes->id_pessoas}}">
                               {{$pes->nome}}
@@ -41,19 +41,12 @@
             		<div class="form-group">
             		<label>Tipo Comprovante</label>
             		<select name="tipo_comprovante" id="tipo_comprovante" class="form-control">
-	            		
                               <option value="Dinheiro">Dinheiro </option>
 	            		<option value="Boleto"> Boleto </option>
 	            		<option value="Cartão">Cartão </option>
-
-	            		
             		</select>
             		</div>
-            		
             	</div>
-
-            		
-            	
             	<div class="col-lg-4 col-sm-4 col-md-4 col-xs-12">
             		<div class="form-group">
 	            	<label for="num_doc">Série Comprovante</label>
@@ -67,20 +60,14 @@
                         <label for="num_doc">Número Comprovante</label>
                         <input type="text" name="num_comprovante" required value="{{old('num_comprovante')}}" class="form-control" placeholder="Número do comprovante...">
                         </div>
-                        
                   </div>
-
-            	
-
             </div>
-
-            
            
       <div class="row">
 
             <div class="panel panel-primary">
                   <div class="panel-body">
-                        <div class="col-lg-4 col-sm-4 col-md-4 col-xs-12">
+                        <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12">
                               <div class="form-group">
                               <label for="nome">Produto</label>
                               
@@ -93,8 +80,12 @@
                               </select>
                               </div>
                         </div>
-
-
+                        <div class="col-lg-2 col-sm-2 col-md-2  col-xs-12">
+                              <div class="form-group">
+                              <label for="num_doc">Estoque Atual</label>                            
+                                    <input type="text" readonly="true" id="estoque_atual" class="form-control" value="">                             
+                              </div>
+                        </div>
                         <div class="col-lg-2 col-sm-2 col-md-2  col-xs-12">
                               <div class="form-group">
                               <label for="num_doc">Quantidade</label>
@@ -103,22 +94,20 @@
                               class="form-control" placeholder="Quantidade...">
                               </div>
                         </div>
-
-                        <div class="col-lg-2 col-sm-2 col-md-2  col-xs-12">
-                              <div class="form-group">
-                              <label for="num_doc">Preço Compra</label>
-                              <input type="number" name="preco_compra" value="{{old('preco_compra')}}" 
-                              id="p_preco_compra"
-                              class="form-control" placeholder="Preço de Compra...">
-                              </div>
-                        </div>
-
                         <div class="col-lg-2 col-sm-2 col-md-2  col-xs-12">
                               <div class="form-group">
                               <label for="num_doc">Preço Venda</label>
                               <input type="number" name="preco_venda" value="{{old('preco_venda')}}" 
                               id="p_preco_venda"
                               class="form-control" placeholder="Preço de Venda...">
+                              </div>
+                        </div>
+                        <div class="col-lg-2 col-sm-2 col-md-2  col-xs-12">
+                              <div class="form-group">
+                              <label for="num_doc">Desconto</label>
+                              <input type="number" name="desconto" value="{{old('desconto')}}" 
+                              id="p_desconto"
+                              class="form-control" placeholder="Desconto...">
                               </div>
                         </div>
 
@@ -149,7 +138,8 @@
                         <th></th>
                         <th></th>
                         <th></th>
-                        <th id="total">R$ 0,00</th>     
+                        <th id="total">R$ 0,00</th>
+                        <input type="hidden" name="total_venda" id="total_venda">    
                         </tfoot>
                         </table>
                         </div>
@@ -175,10 +165,22 @@
 <script>
 
 $(document).ready(function(){
+      id_produto = $('#p_id_produto').val();
+            $.ajax({
+                  type: 'GET',
+                  url: '/venda/consultaEstoque',
+                  data: {
+                        'id_produto': id_produto
+                  },
+                  success: function(data){
+                        $('#estoque_atual').val(data.estoque);
+                  }                  
+      });
       $('#bt_add').click(function(){
             adicionar();
 
       });
+      id_produto = $(this).val();
 });
 
 var cont=0;
@@ -232,6 +234,22 @@ function apagar(index){
       $("#linha" + index).remove();
       ocultar();
 }
+
+$('#p_id_produto').change(function(){
+      id_produto = $(this).val();
+            $.ajax({
+                  type: 'GET',
+                  url: '/venda/consultaEstoque',
+                  data: {
+                        'id_produto': id_produto
+                  },
+                  success: function(data){
+                        $('#estoque_atual').val(data.estoque);
+                  }                  
+            });
+})
+
+
 
 
 

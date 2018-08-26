@@ -20,4 +20,6 @@ Route::resource('estoque/produto', 'ProdutoController');
 Route::resource('venda/cliente', 'ClienteController');
 Route::resource('compra/fornecedor', 'FornecedorController');
 Route::resource('compra/entrada', 'EntradaController');
+Route::resource('venda/venda', 'VendaController');
+Route::get('venda/consultaEstoque', 'VendaController@consultaEstoque');
 

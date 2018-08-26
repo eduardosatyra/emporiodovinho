@@ -71,6 +71,18 @@
 			            	<input type="text" value="{{ $produto -> descricao }}" name="descricao" class="form-control" placeholder="Descrição...">
             			</div>
             	</div>
+				<div class="col-lg-6 col-sm-6 col-xs-12">        
+					<div class="form-group">
+						<label for="descricao">Preco de Compra</label>
+						<input type="text" value="{{ $produto -> preco_compra }}" name="preco_compra" class="form-control">
+					</div>
+				</div>
+				<div class="col-lg-6 col-sm-6 col-xs-12">        
+					<div class="form-group">
+						<label for="descricao">Preço de Venda</label>
+						<input type="text" value="{{ $produto -> preco_venda }}" name="preco_venda" class="form-control">
+					</div>
+				</div>
 
             	<div class="col-lg-6 col-sm-6 col-xs-12">        
 	            		<div class="form-group">

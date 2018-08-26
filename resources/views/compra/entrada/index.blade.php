@@ -14,20 +14,18 @@
 				<thead>
 					<th>Data</th>
 					<th>Fornecedor</th>
-					<th>Tipo Comprovante</th>
-					<th>Série</th>
-					<th>Número Comprovante</th>
+					<th>Tipo Comprovante</th>					
 					<th>Taxa</th>
 					<th>Total</th>
-					<th>Ações</th>
+					<th>Estado</th>
+					<th>Opções</th>
 				</thead>
+				
                @foreach ($entradas as $ent)
 				<tr>
 					<td>{{ $ent->data_hora}}</td>
 					<td>{{ $ent->nome}}</td>
-					<td>{{ $ent->tipo_comprovante}}</td>					
-					<td>{{ $ent->serie_comprovante}}</td>
-					<td>{{ $ent->num_comprovante}}</td>
+					<td>{{ $ent->tipo_comprovante. ' - ' . $ent->serie_comprovante. ' - ' .$ent->num_comprovante}}</td>
 					<td>{{ $ent->taxa}}</td>
 					<td>{{ $ent->total}}</td>
 					<td>{{ $ent->estado}}</td>

@@ -15,6 +15,8 @@ class Produto extends Model
     'codigo',
     'nome',
     'estoque',
+    'preco_compra',
+    'preco_venda',
     'descricao',
     'imagem',
     'estado'
