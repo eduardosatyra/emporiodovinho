@@ -1,7 +1,5 @@
 <?php
-
 namespace emporiodovinho\Http\Controllers\Auth;
-
 use emporiodovinho\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 
@@ -17,16 +15,13 @@ class ResetPasswordController extends Controller
     | explore this trait and override any methods you wish to tweak.
     |
     */
-
     use ResetsPasswords;
-
     /**
      * Where to redirect users after resetting their password.
      *
      * @var string
      */
-    protected $redirectTo = '/home';
-
+    protected $redirectTo = '/venda/venda';
     /**
      * Create a new controller instance.
      *

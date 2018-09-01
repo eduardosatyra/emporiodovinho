@@ -12,7 +12,7 @@ class ClienteController extends Controller
 {
     
     public function __construct(){
-    	//
+    	$this->middleware('auth');
     }
 
     public function index(Request $request){
@@ -26,14 +26,14 @@ class ClienteController extends Controller
             ->where('tipo_pessoa', '=', 'Cliente')
             ->orderBy('id_pessoas', 'desc')
             ->paginate(7);
-            return view('venda.cliente.index', [
+            return view('cliente.cliente.index', [
                 "pessoas"=>$pessoas, "searchText"=>$query
                 ]);
         }
     }
 
     public function create(){
-    	return view("venda.cliente.create");
+    	return view("cliente.cliente.create");
     }
 
     public function store(PessoaFormRequest $request){
@@ -46,7 +46,7 @@ class ClienteController extends Controller
     	$pessoa->telefone=$request->get('telefone');
     	$pessoa->email=$request->get('email');
     	$pessoa->save();
-    	return Redirect::to('venda/cliente');
+    	return Redirect::to('cliente/cliente');
     }
 
     public function show($id){
@@ -55,7 +55,7 @@ class ClienteController extends Controller
     }
 
     public function edit($id){
-    	return view("venda.cliente.edit",
+    	return view("cliente.cliente.edit",
     		["pessoa"=>Pessoa::findOrFail($id) ]);
     }
 
@@ -69,13 +69,13 @@ class ClienteController extends Controller
     	$pessoa->telefone=$request->get('telefone');
     	$pessoa->email=$request->get('email');
     	$pessoa->update();
-    	return Redirect::to('venda/cliente');
+    	return Redirect::to('cliente/cliente');
     }
 
     public function destroy($id){
     	$pessoa=Pessoa::findOrFail($id);
     	$pessoa->tipo_pessoa='Inativo';
     	$pessoa->update();
-    	return Redirect::to('venda/cliente');
+    	return Redirect::to('cliente/cliente');
     }
     }

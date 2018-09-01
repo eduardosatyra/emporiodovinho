@@ -15,7 +15,7 @@ use Illuminate\Support\Collection;
 
 class VendaController extends Controller {
      public function __construct(){
-    	//
+    	$this->middleware('auth');
     }
 
     public function index(Request $request){
@@ -24,7 +24,6 @@ class VendaController extends Controller {
             $query=trim($request->get('searchText'));
             $vendas = DB::table('venda as v')
             ->join('pessoa as p', 'v.id_cliente', '=' , 'p.id_pessoas')
-            ->join('detalhe_venda as dv', 'v.id_venda', '=' , 'dv.id_venda')
             ->select('v.id_venda', 'v.data_hora', 'p.nome', 'v.tipo_comprovante','v.serie_comprovante','v.num_comprovante', 'v.taxa', 'v.estado', 'v.total_venda')
             ->where('estado' , '=' , 'A')
             ->where('v.num_comprovante', 'LIKE', '%'.$query.'%')
@@ -92,7 +91,7 @@ class VendaController extends Controller {
     public function show($id){
         $venda = DB::table('venda as v')
             ->join('pessoa as p', 'v.id_cliente', '=' , 'p.id_pessoas')
-            ->join('detalhe_venda as dv', 'v.id_entrada', '=' , 'dv.id_entrada')
+            ->join('detalhe_venda as dv', 'v.id_venda', '=' , 'dv.id_venda')
             ->select('v.id_venda', 'v.data_hora', 'p.nome', 'v.tipo_comprovante','v.serie_comprovante', 'v.num_comprovante', 'v.taxa', 'v.estado', 'v.total_venda')
             ->where('v.id_venda' , '=' , $id)
             ->first();            
@@ -110,14 +109,5 @@ class VendaController extends Controller {
     	$venda->estado='C';
     	$venda->update();
     	return Redirect::to('venda/venda');
-    }
-
-    public function consultaEstoque(Request $request){
-        $id_produto = $request->id_produto;
-        $estoque = DB::table('produto')
-        ->select('estoque')
-        ->where('id_produto', '=', $id_produto)
-        ->first();      
-         return Response::json($estoque);
     }
 }

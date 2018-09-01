@@ -28,8 +28,7 @@ class ProdutoFormRequest extends FormRequest
             'codigo'=>'required|max:50',
             'nome'=>'required|max:50',
             'estoque'=>'required|numeric',
-            'descricao'=>'required|max:512',
-            'imagem'=>'mimes:jpeg,bmp,png',
+            'descricao'=>'required|max:512',            
         ];
     }
 }

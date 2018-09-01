@@ -11,7 +11,7 @@ use DB;
 class FornecedorController extends Controller {
     
     public function __construct(){
-    	//
+    	$this->middleware('auth');
     }
 
     public function index(Request $request){
@@ -25,14 +25,14 @@ class FornecedorController extends Controller {
             ->where('tipo_pessoa', '=', 'Fornecedor')
             ->orderBy('id_pessoas', 'desc')
             ->paginate(7);
-            return view('compra.fornecedor.index', [
+            return view('fornecedor.fornecedor.index', [
                 "pessoas"=>$pessoas, "searchText"=>$query
                 ]);
         }
     }
 
     public function create(){
-    	return view("compra.fornecedor.create");
+    	return view("fornecedor.fornecedor.create");
     }
 
     public function store(PessoaFormRequest $request){
@@ -45,16 +45,16 @@ class FornecedorController extends Controller {
     	$pessoa->telefone=$request->get('telefone');
     	$pessoa->email=$request->get('email');
     	$pessoa->save();
-    	return Redirect::to('compra/fornecedor');
+    	return Redirect::to('fornecedor/fornecedor');
     }
 
     public function show($id){
-    	return view("compra.fornecedor.show",
+    	return view("fornecedor.fornecedor.show",
     		["pessoa"=>Pessoa::findOrFail($id) ]);
     }
 
     public function edit($id){
-    	return view("compra.fornecedor.edit",
+    	return view("fornecedor.fornecedor.edit",
     		["pessoa"=>Pessoa::findOrFail($id) ]);
     }
 
@@ -68,13 +68,13 @@ class FornecedorController extends Controller {
     	$pessoa->telefone=$request->get('telefone');
     	$pessoa->email=$request->get('email');
     	$pessoa->update();
-    	return Redirect::to('compra/fornecedor');
+    	return Redirect::to('fornecedor/fornecedor');
     }
 
     public function destroy($id){
     	$pessoa=Pessoa::findOrFail($id);
     	$pessoa->tipo_pessoa='Inativo';
     	$pessoa->update();
-    	return Redirect::to('compra/fornecedor');
+    	return Redirect::to('fornecedor/fornecedor');
     }
 }

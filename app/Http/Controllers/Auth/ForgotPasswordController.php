@@ -1,7 +1,5 @@
 <?php
-
 namespace emporiodovinho\Http\Controllers\Auth;
-
 use emporiodovinho\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 
@@ -17,9 +15,7 @@ class ForgotPasswordController extends Controller
     | your application to your users. Feel free to explore this trait.
     |
     */
-
     use SendsPasswordResetEmails;
-
     /**
      * Create a new controller instance.
      *

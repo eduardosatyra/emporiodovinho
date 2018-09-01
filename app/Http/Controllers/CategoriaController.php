@@ -12,7 +12,7 @@ use DB;
 class CategoriaController extends Controller
 {
     public function __construct(){
-    	//
+    	$this->middleware('auth');
     }
 
     public function index(Request $request){
@@ -24,14 +24,14 @@ class CategoriaController extends Controller
             ->where('condicao', '=', '1')
             ->orderBy('id_categoria', 'desc')
             ->paginate(7);
-            return view('estoque.categoria.index', [
+            return view('produto.categoria.index', [
                 "categorias"=>$categorias, "searchText"=>$query
                 ]);
         }
     }
 
     public function create(){
-    	return view("estoque.categoria.create");
+    	return view("produto.categoria.create");
     }
 
     public function store(CategoriaFormRequest $request){
@@ -40,16 +40,16 @@ class CategoriaController extends Controller
     	$categoria->descricao=$request->get('descricao');
     	$categoria->condicao='1';
     	$categoria->save();
-    	return Redirect::to('estoque/categoria');
+    	return Redirect::to('produto/categoria');
     }
 
     public function show($id){
-    	return view("estoque.categoria.show",
+    	return view("produto.categoria.show",
     		["categoria"=>Categoria::findOrFail($id) ]);
     }
 
     public function edit($id){
-    	return view("estoque.categoria.edit",
+    	return view("produto.categoria.edit",
     		["categoria"=>Categoria::findOrFail($id) ]);
     }
 
@@ -59,13 +59,13 @@ class CategoriaController extends Controller
     	$categoria->descricao=$request->get('descricao');
     	//$categoria->condicao=$request->get('condicao');
     	$categoria->update();
-    	return Redirect::to('estoque/categoria');
+    	return Redirect::to('produto/categoria');
     }
 
     public function destroy($id){
     	$categoria=Categoria::findOrFail($id);
     	$categoria->condicao='0';
     	$categoria->update();
-    	return Redirect::to('estoque/categoria');
+    	return Redirect::to('produto/categoria');
     }
 }

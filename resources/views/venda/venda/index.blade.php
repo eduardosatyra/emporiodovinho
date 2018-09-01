@@ -12,24 +12,19 @@
 		<div class="table-responsive">
 			<table class="table table-striped table-bordered table-condensed table-hover">
 				<thead>
+					<th>Id</th>
 					<th>Data</th>
-					<th>Cliente</th>
-					<th>Tipo Comprovante</th>					
-					<th>Taxa</th>
-					<th>Total</th>
-					<th>Estado</th>
+					<th>Cliente</th>					
+					<th>Total</th>					
 					<th>Opções</th>
 				</thead>
 				
                @foreach ($vendas as $ven)
 				<tr>
+					<td>{{ $ven->id_venda}}</td>
 					<td>{{ $ven->data_hora}}</td>
 					<td>{{ $ven->nome}}</td>
-					<td>{{ $ven->tipo_comprovante. ' - ' . $ven->serie_comprovante. ' - ' .$ven->num_comprovante}}</td>
-					<td>{{ $ven->taxa}}</td>
 					<td>{{ $ven->total_venda}}</td>
-					<td>{{ $ven->estado}}</td>
-				
 				<td>					
 					<a href="{{URL::action('VendaController@show',$ven->id_venda)}}"><button class="btn btn-info">Detalhes</button></a>
                     <a href="" data-target="#modal-delete-{{$ven->id_venda}}" data-toggle="modal"><button class="btn btn-danger">Anular</button></a>

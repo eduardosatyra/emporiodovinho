@@ -17,8 +17,7 @@ class Produto extends Model
     'estoque',
     'preco_compra',
     'preco_venda',
-    'descricao',
-    'imagem',
+    'descricao',    
     'estado'
 
     ];

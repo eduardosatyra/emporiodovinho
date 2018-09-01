@@ -12,7 +12,7 @@ use DB;
 class ProdutoController extends Controller
 {
     public function __construct(){
-    	//
+    	$this->middleware('auth');
     }
 
     public function index(Request $request){
@@ -21,12 +21,12 @@ class ProdutoController extends Controller
             $query=trim($request->get('searchText'));
             $produtos=DB::table('produto as p')
             ->join('categoria as c', 'p.id_categoria', '=', 'c.id_categoria')
-            ->select('p.id_produto', 'p.nome', 'p.codigo', 'p.estoque', 'c.nome as categoria', 'p.descricao', 'p.imagem', 'p.estado')
+            ->select('p.id_produto', 'p.nome', 'p.codigo', 'p.estoque', 'c.nome as categoria', 'p.descricao', 'p.estado')
             ->where('p.nome', 'LIKE', '%'.$query.'%')
             ->where('p.estado', '=', 'Ativo')
             ->orderBy('id_produto', 'desc')
             ->paginate(10);
-            return view('estoque.produto.index', [
+            return view('produto.produto.index', [
                 "produtos"=>$produtos, "searchText"=>$query
                 ]);
         }
@@ -38,7 +38,7 @@ class ProdutoController extends Controller
     	->where('condicao', '=', '1')
     	->get();
 
-    	return view("estoque.produto.create", ["categorias"=>$categorias]);
+    	return view("produto.produto.create", ["categorias"=>$categorias]);
     }
 
     public function store(ProdutoFormRequest $request){
@@ -50,21 +50,14 @@ class ProdutoController extends Controller
 		$produto->preco_compra=$request->get('preco_compra');
 		$produto->preco_venda=$request->get('preco_venda');
     	$produto->descricao=$request->get('descricao');
-    	$produto->estado='Ativo';
-
-    	if(Input::hasFile('imagem')){
-    		$file=Input::file('imagem');
-    		$file->move(public_path().'/imagens/produtos/', 
-    			$file->getClientOriginalName());
-    		$produto->imagem=$file->getClientOriginalName();
-    	}
+    	$produto->estado='Ativo';    	
 
     	$produto->save();
-    	return Redirect::to('estoque/produto');
+    	return Redirect::to('produto/produto');
     }
 
     public function show($id){
-    	return view("estoque.produto.show",
+    	return view("produto.produto.show",
     		["produto"=>Categoria::findOrFail($id) ]);
     }
 
@@ -73,7 +66,7 @@ class ProdutoController extends Controller
     	$produto = Produto::findOrFail($id);
     	$categorias = DB::table('categoria')->where('condicao', '=', '1')->get();
 
-    	return view("estoque.produto.edit",
+    	return view("produto.produto.edit",
     		["produto"=>$produto, "categorias"=>$categorias]);
     }
 
@@ -86,22 +79,16 @@ class ProdutoController extends Controller
 		$produto->descricao=$request->get('descricao');
 		$produto->preco_compra=$request->get('preco_compra');
 		$produto->preco_venda=$request->get('preco_venda');
-
-    	if(Input::hasFile('imagem')){
-    		$file=Input::file('imagem');
-    		$file->move(public_patch().'/imagens/produtos/', $file->getClientOriginalName());
-    		$produto->imagem=$file->getClientOriginalName();
-    	}
     	
     	//$categoria->condicao=$request->get('condicao');
     	$produto->update();
-    	return Redirect::to('estoque/produto');
+    	return Redirect::to('produto/produto');
     }
 
     public function destroy($id){
     	$produto=Produto::findOrFail($id);
     	$produto->estado='Inativo';
     	$produto->update();
-    	return Redirect::to('estoque/produto');
+    	return Redirect::to('produto/produto');
     }
 }

@@ -72,8 +72,9 @@
                               <label for="nome">Produto</label>
                               
                               <select name="p_id_produto" id="p_id_produto" class="form-control selectpicker" data-live-search="true">
-                                    @foreach($produtos as $pro)
-                                    <option value="{{$pro->id_produto}}">
+                                   <option value="selecione">Selecione um produto..</option>
+                                    @foreach($produtos as $pro)                                    
+                                    <option value="{{$pro->id_produto}}_{{$pro->estoque}}_{{$pro->preco_venda}}">
                                     {{$pro->nome}}
                                     </option>
                                     @endforeach
@@ -89,7 +90,7 @@
                         <div class="col-lg-2 col-sm-2 col-md-2  col-xs-12">
                               <div class="form-group">
                               <label for="num_doc">Quantidade</label>
-                              <input type="number" name="quantidade" value="{{old('quantidade')}}" 
+                              <input type="number" name="quantidade"  
                               id="p_quantidade"
                               class="form-control" placeholder="Quantidade...">
                               </div>
@@ -97,16 +98,14 @@
                         <div class="col-lg-2 col-sm-2 col-md-2  col-xs-12">
                               <div class="form-group">
                               <label for="num_doc">Preço Venda</label>
-                              <input type="number" name="preco_venda" value="{{old('preco_venda')}}" 
-                              id="p_preco_venda"
-                              class="form-control" placeholder="Preço de Venda...">
+                              <input type="number" name="preco_venda" id="p_preco_venda"
+                              class="form-control" placeholder="Preço de Venda..." disabled>
                               </div>
                         </div>
                         <div class="col-lg-2 col-sm-2 col-md-2  col-xs-12">
                               <div class="form-group">
                               <label for="num_doc">Desconto</label>
-                              <input type="number" name="desconto" value="{{old('desconto')}}" 
-                              id="p_desconto"
+                              <input type="text" name="desconto" id="p_desconto"
                               class="form-control" placeholder="Desconto...">
                               </div>
                         </div>
@@ -128,8 +127,8 @@
                         <th>Opções</th>
                         <th>Produtos</th>
                         <th>Quantidade</th>
-                        <th>Preço Compra</th>
                         <th>Preço Venda</th>
+                        <th>Desconto</th>
                         <th>Total</th>
                         </thead>
                         <tfoot>
@@ -138,7 +137,7 @@
                         <th></th>
                         <th></th>
                         <th></th>
-                        <th id="total">R$ 0,00</th>
+                        <th><h4 id="total">R$ 0,00</h4></th>
                         <input type="hidden" name="total_venda" id="total_venda">    
                         </tfoot>
                         </table>
@@ -165,17 +164,6 @@
 <script>
 
 $(document).ready(function(){
-      id_produto = $('#p_id_produto').val();
-            $.ajax({
-                  type: 'GET',
-                  url: '/venda/consultaEstoque',
-                  data: {
-                        'id_produto': id_produto
-                  },
-                  success: function(data){
-                        $('#estoque_atual').val(data.estoque);
-                  }                  
-      });
       $('#bt_add').click(function(){
             adicionar();
 
@@ -187,28 +175,39 @@ var cont=0;
 total = 0;
 subtotal=[];
 $("#salvar").hide();
+$("#p_id_produto").change(mostrarValores);
+
+function mostrarValores(){
+      dadosProdutos = document.getElementById("p_id_produto").value.split('_');
+      $("#p_preco_venda").val(dadosProdutos[2]);
+      $("#estoque_atual").val(dadosProdutos[1]);
+}
 
 function adicionar(){
-      id_produto=$("#p_id_produto").val();
+      dadosProdutos = document.getElementById("p_id_produto").value.split('_');
+      id_produto=dadosProdutos[0];
       produto=$("#p_id_produto option:selected").text();
       quantidade=$("#p_quantidade").val();
-      preco_compra=$("#p_preco_compra").val();
+      desconto=$("#p_desconto").val();
       preco_venda=$("#p_preco_venda").val();
+      estoque=$("#estoque_atual").val();
 
-      if(id_produto!="" && quantidade!="" && quantidade>0 && preco_compra!="" && preco_venda!=""){
-
-            subtotal[cont]=(quantidade*preco_compra);
-            total = total + subtotal[cont];
-            var linha = '<tr class="selected" id="linha'+cont+'">    <td> <button type="button" class="btn btn-warning" onclick="apagar('+cont+');"> X </button></td>      <td> <input type="hidden" name="id_produto[]" value="'+id_produto+'">'+produto+'</td>             <td> <input type="number" name="quantidade[]" value="'+quantidade+'"></td>                       <td> <input type="number" name="preco_compra[]" value="'+preco_compra+'"></td>                     <td> <input type="number" name="preco_venda[]" value="'+preco_venda+'"></td>                      <td> '+subtotal[cont]+' </td> </tr>'
-            cont++;
-            limpar();
-            $("#total").html("R$: " + total);
-            ocultar();
-            $('#detalhes').append(linha);
-
+      if(id_produto!="" && quantidade!="" && quantidade>0 && preco_venda!=""){
+            if(estoque >= quantidade){                  
+                  subtotal[cont]=(quantidade*preco_venda-desconto);
+                  total = total + subtotal[cont];
+                  var linha = '<tr class="selected" id="linha'+cont+'"><td> <button type="button" class="btn btn-warning" onclick="apagar('+cont+');"> X </button></td><td><input type="hidden" name="id_produto[]" value="'+id_produto+'">'+produto+'</td><td> <input type="number" name="quantidade[]" value="'+quantidade+'"></td><td><input type="number" name="preco_venda[]" value="'+preco_venda+'"></td><td><input type="number" name="desconto[]" value="'+desconto+'"></td><td> '+subtotal[cont]+' </td></tr>'
+                  cont++;
+                  limpar();
+                  $("#total").html("R$: " + total);
+                  $("#total_venda").val(total);
+                  ocultar();
+                  $('#detalhes').append(linha);
+            }else{
+                alert("A quantidade vendida não pode ser maior que o estoque.");  
+            }
       }else{
-            alert("Erro ao inserir os detalhes, preencha os campos corretamente!!");
-
+            alert("Erro ao inserir os produtos da venda, preencha os campos corretamente!!");
       }
 }
 
@@ -216,7 +215,7 @@ function adicionar(){
 function limpar(){
       $("#p_quantidade").val("");
       $("#p_preco_venda").val("");
-      $("#p_preco_compra").val("");
+      $("#p_desconto").val("");
 }
 
 
@@ -231,28 +230,10 @@ function ocultar(){
 function apagar(index){
       total = total - subtotal[index];
       $("#total").html("R$: " + total);
+      $("#total_venda").val(total);
       $("#linha" + index).remove();
       ocultar();
 }
-
-$('#p_id_produto').change(function(){
-      id_produto = $(this).val();
-            $.ajax({
-                  type: 'GET',
-                  url: '/venda/consultaEstoque',
-                  data: {
-                        'id_produto': id_produto
-                  },
-                  success: function(data){
-                        $('#estoque_atual').val(data.estoque);
-                  }                  
-            });
-})
-
-
-
-
-
 </script>
 
 @endpush
