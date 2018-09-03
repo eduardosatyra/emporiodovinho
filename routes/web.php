@@ -8,7 +8,7 @@ Route::resource('produto/categoria', 'CategoriaController');
 Route::resource('produto/produto', 'ProdutoController');
 Route::resource('cliente/cliente', 'ClienteController');
 Route::resource('fornecedor/fornecedor', 'FornecedorController');
-Route::resource('compra/entrada', 'EntradaController');
+Route::resource('estoque/entrada', 'EntradaController');
 Route::resource('venda/venda', 'VendaController');
 Route::resource('usuario/usuario', 'UsuarioController');
 

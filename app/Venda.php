@@ -10,7 +10,7 @@ class Venda extends Model{
 
 	public $timestamps = false;
 	protected $fillable = [
-	'id_cliente','tipo_comprovante','serie_comprovante', 'num_comprovante', 'data_hora', 'taxa', 'total_venda', 'estado'
+	'id_cliente','tipo_pagamento', 'data_hora',  'total_venda'
 	];
 
 	protected $guarded = [];

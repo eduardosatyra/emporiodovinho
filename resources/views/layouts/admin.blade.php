@@ -106,7 +106,10 @@
                             <i class="fa fa-angle-left pull-right"></i>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="/compra/entrada"><i class="fa fa-circle-o"></i> Entradas</a></li>
+                            <li><a href="/estoque/entrada"><i class="fa fa-circle-o"></i> Entradas</a></li>
+                        </ul>
+                        <ul class="treeview-menu">
+                            <li><a href="/estoque/saida"><i class="fa fa-circle-o"></i> Saidas</a></li>
                         </ul>
                     </li>
                     <li class="treeview">
@@ -126,6 +129,15 @@
                         </a>
                         <ul class="treeview-menu">
                             <li><a href="/usuario/usuario"><i class="fa fa-circle-o"></i> Usuarios</a></li>
+                        </ul>
+                    </li>
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-line-chart" aria-hidden="true"></i> <span>Relatórios</span>
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="#"><i class="fa fa-circle-o"></i> fazer aqui..</a></li>
                         </ul>
                     </li>       
                 </ul>

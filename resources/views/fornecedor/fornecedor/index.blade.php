@@ -18,26 +18,28 @@
 					<th>Endereço</th>
 					<th>Telefone</th>
 					<th>E-mail</th>
+					<th>Status</th>
 				</thead>
-				@foreach ($pessoas as $pes)
+				@foreach ($fornecedor as $for)
 				<tr>
-					<td>{{ $pes->id_pessoas}}</td>
-					<td>{{ $pes->nome}}</td>
-					<td>{{ $pes->tipo_documento}}</td>
-					<td>{{ $pes->num_doc}}</td>
-					<td>{{ $pes->endereco}}</td>
-					<td>{{ $pes->telefone}}</td>
-					<td>{{ $pes->email}}</td>
+					<td>{{ $for->id_fornecedor}}</td>
+					<td>{{ $for->nome}}</td>
+					<td>{{ $for->tipo_documento}}</td>
+					<td>{{ $for->num_doc}}</td>
+					<td>{{ $for->endereco}}</td>
+					<td>{{ $for->telefone}}</td>
+					<td>{{ $for->email}}</td>
+					<td>{{ $for->status}}</td>
 					<td>
-						<a href="{{URL::action('FornecedorController@edit',$pes->id_pessoas)}}"><button class="btn btn-info">Editar</button></a>
-						<a href="" data-target="#modal-delete-{{$pes->id_pessoas}}" data-toggle="modal"><button class="btn btn-danger">Excluir</button></a>
+						<a href="{{URL::action('FornecedorController@edit',$for->id_fornecedor)}}"><button class="btn btn-info">Editar</button></a>
+						<a href="" data-target="#modal-delete-{{$for->id_fornecedor}}" data-toggle="modal"><button class="btn btn-danger">Excluir</button></a>
 					</td>
 				</tr>
 				@include('fornecedor.fornecedor.modal')
 				@endforeach
 			</table>
 		</div>
-		{{$pessoas->render()}}
+		{{$fornecedor->render()}}
 	</div>
 </div>
 @stop

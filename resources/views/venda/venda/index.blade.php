@@ -14,7 +14,8 @@
 				<thead>
 					<th>Id</th>
 					<th>Data</th>
-					<th>Cliente</th>					
+					<th>Cliente</th>
+					<th>Tipo de Pagamento</th>					
 					<th>Total</th>					
 					<th>Opções</th>
 				</thead>
@@ -24,10 +25,10 @@
 					<td>{{ $ven->id_venda}}</td>
 					<td>{{ $ven->data_hora}}</td>
 					<td>{{ $ven->nome}}</td>
+					<td>{{ $ven->tipo_pagamento}}</td>
 					<td>{{ $ven->total_venda}}</td>
 				<td>					
 					<a href="{{URL::action('VendaController@show',$ven->id_venda)}}"><button class="btn btn-info">Detalhes</button></a>
-                    <a href="" data-target="#modal-delete-{{$ven->id_venda}}" data-toggle="modal"><button class="btn btn-danger">Anular</button></a>
 					</td>
 				</tr>
 				@include('venda.venda.modal')

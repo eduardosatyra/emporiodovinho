@@ -14,41 +14,29 @@
         @endif
     </div>
 </div>
-{!!Form::open(array('url'=>'compra/entrada','method'=>'POST','autocomplete'=>'off'))!!}
+{!!Form::open(array('url'=>'estoque/entrada','method'=>'POST','autocomplete'=>'off'))!!}
 {{Form::token()}}
 <div class="row">
-    <div class="col-lg-12 col-sm-12 col-xs-12">
+    <div class="col-lg-6 col-sm-6 col-xs-6">
         <div class="form-group">
             <label for="nome">Fornecedor</label>
             <select name="id_fornecedor" id="id_fornecedor" class="form-control selectpicker" data-live-search="true">
-                @foreach($pessoas as $pes)
-                <option value="{{$pes->id_pessoas}}">
-                    {{$pes->nome}}
+                @foreach($fornecedor as $for)
+                <option value="{{$for->id_fornecedor}}">
+                    {{$for->nome}}
                 </option>
                 @endforeach
             </select>
         </div>
     </div>
-    <div class="col-lg-4 col-sm-4 col-xs-12">
+    <div class="col-lg-6 col-sm-6 col-xs-6">
         <div class="form-group">
-            <label>Tipo Comprovante</label>
-            <select name="tipo_comprovante" id="tipo_comprovante" class="form-control">
+            <label>Tipo Pagamento</label>
+            <select name="tipo_pagamento" id="tipo_pagamento" class="form-control">
                 <option value="Dinheiro">Dinheiro </option>
                 <option value="Boleto"> Boleto </option>
                 <option value="Cartão">Cartão </option>
             </select>
-        </div>
-    </div>
-    <div class="col-lg-4 col-sm-4 col-md-4 col-xs-12">
-        <div class="form-group">
-            <label for="num_doc">Série Comprovante</label>
-            <input type="text" name="serie_comprovante" required value="{{old('serie_comprovante')}}" class="form-control" placeholder="Série do comprovante...">
-        </div>
-    </div>
-    <div class="col-lg-4 col-sm-4 col-xs-12">
-        <div class="form-group">
-            <label for="num_doc">Número Comprovante</label>
-            <input type="text" name="num_comprovante" required value="{{old('num_comprovante')}}" class="form-control" placeholder="Número do comprovante...">
         </div>
     </div>
 </div>
@@ -94,7 +82,7 @@
             <div class="col-lg-2 col-sm-2 col-md-2  col-xs-12">
                 <div class="form-group">
                     <button type="button" id="bt_add"
-                    class="btn btn-primary">
+                    class="btn btn-primary" style="margin-top: 24px;">
                     Adicionar
                 </button>
             </div>

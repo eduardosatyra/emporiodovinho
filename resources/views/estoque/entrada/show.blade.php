@@ -1,28 +1,16 @@
 @extends('layouts.admin')
 @section('conteudo')
 <div class="row">
-	<div class="col-lg-12 col-sm-12 col-xs-12">
+	<div class="col-lg-6 col-sm-6 col-xs-6">
 		<div class="form-group">
 			<label for="nome">Fornecedor</label>
 			<p>{{$entrada->nome}}</p>
 		</div>
 	</div>
-	<div class="col-lg-4 col-sm-4 col-xs-12">
+	<div class="col-lg-6 col-sm-6 col-xs-6">
 		<div class="form-group">
-			<label>Tipo Comprovante</label>
-			<p>{{$entrada->tipo_comprovante}}</p>
-		</div>
-	</div>
-	<div class="col-lg-4 col-sm-4 col-md-4 col-xs-12">
-		<div class="form-group">
-			<label for="num_doc">Série Comprovante</label>
-			<p>{{$entrada->serie_comprovante}}</p>
-		</div>
-	</div>
-	<div class="col-lg-4 col-sm-4 col-xs-12">
-		<div class="form-group">
-			<label for="num_doc">Número Comprovante</label>
-			<p>{{$entrada->num_comprovante}}</p>
+			<label>Tipo Pagamento</label>
+			<p>{{$entrada->tipo_pagamento}}</p>
 		</div>
 	</div>
 </div>

@@ -46,6 +46,15 @@
     </div>
     <div class="col-lg-6 col-sm-6 col-xs-12">
         <div class="form-group">
+            <label>Sexo</label>
+            <select name="sexo" class="form-control">
+                <option value="Masculino"> MASCULINO </option>
+                <option value="Feminino">FEMININO </option>
+            </select>
+        </div>
+    </div>
+    <div class="col-lg-6 col-sm-6 col-xs-12">
+        <div class="form-group">
             <label for="telefone">Telefone</label>
             <input type="text" name="telefone" class="form-control" placeholder="Telefone...">
         </div>
@@ -55,6 +64,15 @@
             <label for="email">Email</label>
             <input type="text" name="email" 
             class="form-control" placeholder="Email...">
+        </div>
+    </div>
+     <div class="col-lg-6 col-sm-6 col-xs-12">
+        <div class="form-group">
+            <label>Status</label>
+            <select name="status" class="form-control">
+                <option value="Ativo"> ATIVO </option>
+                <option value="Inativo">INATIVO </option>
+            </select>
         </div>
     </div>
 </div>

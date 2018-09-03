@@ -3,9 +3,9 @@
 namespace emporiodovinho\Http\Controllers;
 
 use Illuminate\Http\Request;
-use emporiodovinho\Pessoa;
+use emporiodovinho\Cliente;
 use Illuminate\Support\Facades\Redirect;
-use emporiodovinho\Http\Requests\PessoaFormRequest;
+use emporiodovinho\Http\Requests\ClienteFormRequest;
 use DB;
 
 class ClienteController extends Controller
@@ -19,15 +19,13 @@ class ClienteController extends Controller
 
         if($request){
             $query=trim($request->get('searchText'));
-            $pessoas=DB::table('pessoa')
+            $clientes=DB::table('cliente')
             ->where('nome', 'LIKE', '%'.$query.'%')
-            ->where('tipo_pessoa', '=', 'Cliente')
             ->orwhere('num_doc', 'LIKE', '%'.$query.'%')
-            ->where('tipo_pessoa', '=', 'Cliente')
-            ->orderBy('id_pessoas', 'desc')
+            ->orderBy('id_cliente', 'desc')
             ->paginate(7);
             return view('cliente.cliente.index', [
-                "pessoas"=>$pessoas, "searchText"=>$query
+                "clientes"=>$clientes, "searchText"=>$query
                 ]);
         }
     }
@@ -36,46 +34,47 @@ class ClienteController extends Controller
     	return view("cliente.cliente.create");
     }
 
-    public function store(PessoaFormRequest $request){
-    	$pessoa = new Pessoa;
-    	$pessoa->tipo_pessoa='Cliente';
-    	$pessoa->nome=$request->get('nome');
-    	$pessoa->tipo_documento=$request->get('tipo_documento');
-    	$pessoa->num_doc=$request->get('num_doc');
-    	$pessoa->endereco=$request->get('endereco');
-    	$pessoa->telefone=$request->get('telefone');
-    	$pessoa->email=$request->get('email');
-    	$pessoa->save();
+    public function store(ClienteFormRequest $request){
+    	$cliente = new Cliente;
+    	$cliente->nome=$request->get('nome');
+    	$cliente->tipo_documento=$request->get('tipo_documento');
+    	$cliente->num_doc=$request->get('num_doc');
+        $cliente->sexo=$request->get('sexo');
+    	$cliente->endereco=$request->get('endereco');
+    	$cliente->telefone=$request->get('telefone');
+    	$cliente->email=$request->get('email');
+        $cliente->status=$request->get('status');
+    	$cliente->save();
     	return Redirect::to('cliente/cliente');
     }
 
     public function show($id){
-    	return view("estoque.cliente.show",
-    		["pessoa"=>Pessoa::findOrFail($id) ]);
+    	return view("cliente.cliente.show",
+    		["cliente"=>Cliente::findOrFail($id) ]);
     }
 
     public function edit($id){
     	return view("cliente.cliente.edit",
-    		["pessoa"=>Pessoa::findOrFail($id) ]);
+    		["cliente"=>Cliente::findOrFail($id) ]);
     }
 
-    public function update(PessoaFormRequest $request, $id){
-    	$pessoa=Pessoa::findOrFail($id);    	
-    	$pessoa->tipo_pessoa='Cliente';
-    	$pessoa->nome=$request->get('nome');
-    	$pessoa->tipo_documento=$request->get('tipo_documento');
-    	$pessoa->num_doc=$request->get('num_doc');
-    	$pessoa->endereco=$request->get('endereco');
-    	$pessoa->telefone=$request->get('telefone');
-    	$pessoa->email=$request->get('email');
-    	$pessoa->update();
+    public function update(ClienteFormRequest $request, $id){
+    	$cliente=Cliente::findOrFail($id);
+    	$cliente->nome=$request->get('nome');
+    	$cliente->tipo_documento=$request->get('tipo_documento');
+    	$cliente->num_doc=$request->get('num_doc');
+    	$cliente->endereco=$request->get('endereco');
+    	$cliente->telefone=$request->get('telefone');
+    	$cliente->email=$request->get('email');
+        $cliente->status=$request->get('status');
+    	$cliente->update();
     	return Redirect::to('cliente/cliente');
     }
 
     public function destroy($id){
-    	$pessoa=Pessoa::findOrFail($id);
-    	$pessoa->tipo_pessoa='Inativo';
-    	$pessoa->update();
+    	$cliente=Cliente::findOrFail($id);
+    	$cliente->status='Inativo';
+    	$cliente->update();
     	return Redirect::to('cliente/cliente');
     }
     }

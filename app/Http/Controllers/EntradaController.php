@@ -23,29 +23,27 @@ class EntradaController extends Controller {
         if($request){
             $query=trim($request->get('searchText'));
             $entradas = DB::table('entrada as e')
-            ->join('pessoa as p', 'e.id_fornecedor', '=' , 'p.id_pessoas')
+            ->join('fornecedor as f', 'e.id_fornecedor', '=' , 'f.id_fornecedor')
             ->join('detalhe_entrada as de', 'e.id_entrada', '=' , 'de.id_entrada')
-            ->select('e.id_entrada', 'e.data_hora', 'p.nome', 'e.tipo_comprovante','e.serie_comprovante','e.num_comprovante', 'e.taxa', 'e.estado', DB::raw('sum(de.quantidade*preco_compra) as total'))
-            ->where('estado' , '=' , 'A')
-            ->where('e.num_comprovante', 'LIKE', '%'.$query.'%')
+            ->select('e.id_entrada', 'e.data_hora', 'f.nome', 'e.tipo_pagamento', DB::raw('sum(de.quantidade*preco_compra) as total'))
+            ->where('e.id_entrada', 'LIKE', '%'.$query.'%')
             ->orderBy('e.id_entrada', 'desc')
-            ->groupBy('e.id_entrada', 'e.data_hora', 'p.nome', 'e.tipo_comprovante','e.serie_comprovante', 'e.num_comprovante' ,'e.taxa', 'e.estado')
+            ->groupBy('e.id_entrada', 'e.data_hora', 'f.nome', 'e.tipo_pagamento')
             ->paginate(7);          
 
-            return view('compra.entrada.index', [
+            return view('estoque.entrada.index', [
                 "entradas"=>$entradas, "searchText"=>$query
                 ]); 
         }
     }
 
     public function create(){
-    	$pessoas=DB::table('pessoa')
-        ->where('tipo_pessoa', '=' , 'Fornecedor')->get();
+    	$fornecedor=DB::table('fornecedor')->get();
         $produtos=DB::table('produto as pro')
         ->select('pro.id_produto', 'pro.nome')
         ->where('pro.estado', '=', 'Ativo')
         ->get();
-        return view('compra.entrada.create', ["pessoas"=>$pessoas, "produtos"=>$produtos]);
+        return view('estoque.entrada.create', ["fornecedor"=>$fornecedor, "produtos"=>$produtos]);
     }
 
     public function store(EntradaFormRequest $request){
@@ -54,9 +52,7 @@ class EntradaController extends Controller {
             DB::beginTransaction();
             $entrada = new Entrada;
             $entrada->id_fornecedor=$request->get('id_fornecedor');
-            $entrada->tipo_comprovante=$request->get('tipo_comprovante');
-            $entrada->serie_comprovante=$request->get('serie_comprovante');
-            $entrada->num_comprovante=$request->get('num_comprovante');            
+            $entrada->tipo_pagamento=$request->get('tipo_pagamento');            
             $mytime = Carbon::now('America/Sao_Paulo');
             $entrada->data_hora=$mytime->toDateTimeString();
             $entrada->taxa='0';
@@ -85,30 +81,30 @@ class EntradaController extends Controller {
        }catch(\Exception $e){
             DB::rollback();
        }
-    	return Redirect::to('compra/entrada');
+    	return Redirect::to('estoque/entrada');
     }
 
     public function show($id){
         $entrada = DB::table('entrada as e')
-            ->join('pessoa as p', 'e.id_fornecedor', '=' , 'p.id_pessoas')
+            ->join('fornecedor as f', 'e.id_fornecedor', '=' , 'f.id_fornecedor')
             ->join('detalhe_entrada as de', 'e.id_entrada', '=' , 'de.id_entrada')
-            ->select('e.id_entrada', 'e.data_hora', 'p.nome', 'e.tipo_comprovante','e.serie_comprovante', 'e.num_comprovante', 'e.taxa', 'e.estado', DB::raw('sum(de.quantidade*preco_compra) as total'))
+            ->select('e.id_entrada', 'e.data_hora', 'f.nome', 'e.tipo_pagamento', DB::raw('sum(de.quantidade*preco_compra) as total'))
             ->where('e.id_entrada' , '=' , $id)
-            ->groupBy('e.id_entrada', 'e.data_hora', 'p.nome', 'e.tipo_comprovante','e.serie_comprovante', 'e.num_comprovante' ,'e.taxa', 'e.estado')
+            ->groupBy('e.id_entrada', 'e.data_hora', 'f.nome', 'e.tipo_pagamento')
             ->first();            
             $detalhes=DB::table('detalhe_entrada as d')
             ->join('produto as p', 'd.id_produto', '=', 'p.id_produto')
             ->select('p.nome as produto', 'd.quantidade', 'd.preco_compra', 'd.preco_venda')
             ->where('d.id_entrada', '=' , $id)
             ->get();
-    	return view("compra.entrada.show",
+    	return view("estoque.entrada.show",
     		["entrada"=>$entrada, "detalhes"=>$detalhes ]);
     }
 
-    public function destroy($id){
+    /*public function destroy($id){
     	$entrada=Entrada::findOrFail($id);
     	$entrada->estado='C';
     	$entrada->update();
-    	return Redirect::to('compra/entrada');
-    }
+    	return Redirect::to('estoque/entrada');
+    }*/
 }

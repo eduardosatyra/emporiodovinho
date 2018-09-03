@@ -5,7 +5,7 @@ namespace emporiodovinho\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use emporiodovinho\Http\Requests\Request;
 
-class PessoaFormRequest extends FormRequest
+class ClienteFormRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -31,6 +31,7 @@ class PessoaFormRequest extends FormRequest
             'endereco'=> 'max:100',
             'telefone'=> 'max:20',       
             'email'=> 'max:50',
+            'status'=> 'required',
             ];
     }
 }

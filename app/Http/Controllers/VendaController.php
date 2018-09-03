@@ -23,10 +23,9 @@ class VendaController extends Controller {
         if($request){
             $query=trim($request->get('searchText'));
             $vendas = DB::table('venda as v')
-            ->join('pessoa as p', 'v.id_cliente', '=' , 'p.id_pessoas')
-            ->select('v.id_venda', 'v.data_hora', 'p.nome', 'v.tipo_comprovante','v.serie_comprovante','v.num_comprovante', 'v.taxa', 'v.estado', 'v.total_venda')
-            ->where('estado' , '=' , 'A')
-            ->where('v.num_comprovante', 'LIKE', '%'.$query.'%')
+            ->join('cliente as c', 'v.id_cliente', '=' , 'c.id_cliente')
+            ->select('v.id_venda', 'v.data_hora', 'c.nome', 'v.tipo_pagamento', 'v.total_venda')         
+            ->where('v.id_venda', 'LIKE', '%'.$query.'%')
             ->orderBy('v.id_venda', 'desc')
             ->paginate(7);    
 
@@ -37,14 +36,13 @@ class VendaController extends Controller {
     }
 
     public function create(){
-    	$pessoas=DB::table('pessoa')
-        ->where('tipo_pessoa', '=' , 'Cliente')->get();
+    	$cliente=DB::table('cliente')->get();
         $produtos=DB::table('produto as pro')        
         ->select('pro.id_produto', 'pro.nome', 'pro.estoque', 'pro.preco_venda')
         ->where('pro.estado', '=', 'Ativo')
         ->where('pro.estoque', '>' , '0')
         ->get();
-        return view('venda.venda.create', ["pessoas"=>$pessoas, "produtos"=>$produtos]);
+        return view('venda.venda.create', ["cliente"=>$cliente, "produtos"=>$produtos]);
     }
 
     public function store(VendaFormRequest $request){
@@ -53,14 +51,10 @@ class VendaController extends Controller {
             DB::beginTransaction();
             $venda = new Venda;
             $venda->id_cliente=$request->get('id_cliente');
-            $venda->tipo_comprovante=$request->get('tipo_comprovante');
-            $venda->serie_comprovante=$request->get('serie_comprovante');
-            $venda->num_comprovante=$request->get('num_comprovante');            
+            $venda->tipo_comprovante=$request->get('tipo_pagamento');            
             $mytime = Carbon::now('America/Sao_Paulo');
             $venda->data_hora=$mytime->toDateTimeString();
             $venda->total_venda=$request->get('total_venda');
-            $venda->taxa='0';
-            $venda->estado='A';
             $venda->save();
 
             $id_produto=$request->get('id_produto');
@@ -90,9 +84,9 @@ class VendaController extends Controller {
 
     public function show($id){
         $venda = DB::table('venda as v')
-            ->join('pessoa as p', 'v.id_cliente', '=' , 'p.id_pessoas')
+            ->join('cliente as c', 'v.id_cliente', '=' , 'c.id_cliente')
             ->join('detalhe_venda as dv', 'v.id_venda', '=' , 'dv.id_venda')
-            ->select('v.id_venda', 'v.data_hora', 'p.nome', 'v.tipo_comprovante','v.serie_comprovante', 'v.num_comprovante', 'v.taxa', 'v.estado', 'v.total_venda')
+            ->select('v.id_venda', 'v.data_hora', 'c.nome', 'v.tipo_pagamento', 'v.total_venda')
             ->where('v.id_venda' , '=' , $id)
             ->first();            
             $detalhes=DB::table('detalhe_venda as d')
@@ -102,12 +96,5 @@ class VendaController extends Controller {
             ->get();
     	return view("venda.venda.show",
     		["venda"=>$venda, "detalhes"=>$detalhes ]);
-    }
-
-    public function destroy($id){
-    	$venda=Venda::findOrFail($id);
-    	$venda->estado='C';
-    	$venda->update();
-    	return Redirect::to('venda/venda');
     }
 }

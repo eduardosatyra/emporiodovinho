@@ -3,9 +3,9 @@
 namespace emporiodovinho\Http\Controllers;
 
 use Illuminate\Http\Request;
-use emporiodovinho\Pessoa;
+use emporiodovinho\Fornecedor;
 use Illuminate\Support\Facades\Redirect;
-use emporiodovinho\Http\Requests\PessoaFormRequest;
+use emporiodovinho\Http\Requests\FornecedorFormRequest;
 use DB;
 
 class FornecedorController extends Controller {
@@ -18,15 +18,13 @@ class FornecedorController extends Controller {
 
         if($request){
             $query=trim($request->get('searchText'));
-            $pessoas=DB::table('pessoa')
+            $fornecedor=DB::table('fornecedor')
             ->where('nome', 'LIKE', '%'.$query.'%')
-            ->where('tipo_pessoa', '=', 'Fornecedor')
             ->orwhere('num_doc', 'LIKE', '%'.$query.'%')
-            ->where('tipo_pessoa', '=', 'Fornecedor')
-            ->orderBy('id_pessoas', 'desc')
+            ->orderBy('id_fornecedor', 'desc')
             ->paginate(7);
             return view('fornecedor.fornecedor.index', [
-                "pessoas"=>$pessoas, "searchText"=>$query
+                "fornecedor"=>$fornecedor, "searchText"=>$query
                 ]);
         }
     }
@@ -35,46 +33,48 @@ class FornecedorController extends Controller {
     	return view("fornecedor.fornecedor.create");
     }
 
-    public function store(PessoaFormRequest $request){
-    	$pessoa = new Pessoa;
-    	$pessoa->tipo_pessoa='Fornecedor';
-    	$pessoa->nome=$request->get('nome');
-    	$pessoa->tipo_documento=$request->get('tipo_documento');
-    	$pessoa->num_doc=$request->get('num_doc');
-    	$pessoa->endereco=$request->get('endereco');
-    	$pessoa->telefone=$request->get('telefone');
-    	$pessoa->email=$request->get('email');
-    	$pessoa->save();
+    public function store(FornecedorFormRequest $request){
+    	$fornecedor = new Fornecedor;
+    	$fornecedor->nome=$request->get('nome');
+    	$fornecedor->tipo_documento=$request->get('tipo_documento');
+    	$fornecedor->num_doc=$request->get('num_doc');
+    	$fornecedor->endereco=$request->get('endereco');
+    	$fornecedor->telefone=$request->get('telefone');
+    	$fornecedor->email=$request->get('email');
+        $fornecedor->sexo=$request->get('sexo');
+        $fornecedor->status=$request->get('status');
+    	$fornecedor->save();
     	return Redirect::to('fornecedor/fornecedor');
     }
 
     public function show($id){
     	return view("fornecedor.fornecedor.show",
-    		["pessoa"=>Pessoa::findOrFail($id) ]);
+    		["fornecedor"=>Fornecedor::findOrFail($id) ]);
     }
 
     public function edit($id){
     	return view("fornecedor.fornecedor.edit",
-    		["pessoa"=>Pessoa::findOrFail($id) ]);
+    		["fornecedor"=>Fornecedor::findOrFail($id) ]);
     }
 
-    public function update(PessoaFormRequest $request, $id){
+    public function update(FornecedorFormRequest $request, $id){
     	$pessoa=Pessoa::findOrFail($id);    	
-    	$pessoa->tipo_pessoa='Fornecedor';
-    	$pessoa->nome=$request->get('nome');
-    	$pessoa->tipo_documento=$request->get('tipo_documento');
-    	$pessoa->num_doc=$request->get('num_doc');
-    	$pessoa->endereco=$request->get('endereco');
-    	$pessoa->telefone=$request->get('telefone');
-    	$pessoa->email=$request->get('email');
-    	$pessoa->update();
+    	$fornecedor->nome=$request->get('nome');
+        $fornecedor->tipo_documento=$request->get('tipo_documento');
+        $fornecedor->num_doc=$request->get('num_doc');
+        $fornecedor->endereco=$request->get('endereco');
+        $fornecedor->telefone=$request->get('telefone');
+        $fornecedor->email=$request->get('email');
+        $fornecedor->sexo=$request->get('sexo');
+        $fornecedor->status=$request->get('status');
+    	$fornecedor->update();
     	return Redirect::to('fornecedor/fornecedor');
     }
 
     public function destroy($id){
-    	$pessoa=Pessoa::findOrFail($id);
-    	$pessoa->tipo_pessoa='Inativo';
-    	$pessoa->update();
+    	$fornecedor=Fornecedor::findOrFail($id);
+    	$fornecedor->status='Inativo';
+    	$fornecedor->update();
     	return Redirect::to('fornecedor/fornecedor');
     }
 }

@@ -4,21 +4,22 @@ namespace emporiodovinho;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Pessoa extends Model
+class Cliente extends Model
 {
-    protected $table = 'pessoa';  
-	protected $primaryKey = 'id_pessoas';
+    protected $table = 'cliente';  
+	protected $primaryKey = 'id_cliente';
 
 	public $timestamps = false;
 	protected $fillable = [
 
-	'tipo_pessoa',
 	'nome',
 	'tipo_documento',
+	'sexo',
 	'num_documento', 
 	'endereco', 
 	'telefone', 
-	'email'
+	'email',
+	'status'
 
 	];
 
