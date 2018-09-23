@@ -47,40 +47,31 @@ class EntradaController extends Controller {
     }
 
     public function store(EntradaFormRequest $request){
+        $entrada = new Entrada;
+        $entrada->id_fornecedor=$request->get('id_fornecedor');
+        $entrada->tipo_pagamento=$request->get('tipo_pagamento');            
+        $mytime = Carbon::now('America/Sao_Paulo');
+        $entrada->data_hora=$mytime->toDateTimeString();
+        $entrada->save();
 
-        try{
-            DB::beginTransaction();
-            $entrada = new Entrada;
-            $entrada->id_fornecedor=$request->get('id_fornecedor');
-            $entrada->tipo_pagamento=$request->get('tipo_pagamento');            
-            $mytime = Carbon::now('America/Sao_Paulo');
-            $entrada->data_hora=$mytime->toDateTimeString();
-            $entrada->taxa='0';
-            $entrada->estado='A';
-            $entrada->save();
+        $id_produto=$request->get('id_produto');
+        $quantidade=$request->get('quantidade');
+        $preco_compra=$request->get('preco_compra');
+        $preco_venda=$request->get('preco_venda'); 
 
-            $id_produto=$request->get('id_produto');
-            $quantidade=$request->get('quantidade');
-            $preco_compra=$request->get('preco_compra');
-            $preco_venda=$request->get('preco_venda'); 
+        $cont = 0;
+        while($cont < count($id_produto)) {
+            $detalhe = new DetalheEntrada();
+            $detalhe->id_entrada=$entrada->id_entrada;
+            $detalhe->id_produto=$id_produto[$cont];
+            $detalhe->quantidade=$quantidade[$cont];
+            $detalhe->preco_compra=$preco_compra[$cont];
+            $detalhe->preco_venda=$preco_venda[$cont];
+            $detalhe->save();
+            $cont=$cont+1;
 
-            $cont = 0;
-            while($cont < count($id_produto)) {
-                $detalhe = new DetalheEntrada();
-                $detalhe->id_entrada=$entrada->id_entrada;
-                $detalhe->id_produto=$id_produto[$cont];
-                $detalhe->quantidade=$quantidade[$cont];
-                $detalhe->preco_compra=$preco_compra[$cont];
-                $detalhe->preco_venda=$preco_venda[$cont];
-                $detalhe->save();
-                $cont=$cont+1;
+        }
 
-            }
-
-             DB::commit();            
-       }catch(\Exception $e){
-            DB::rollback();
-       }
     	return Redirect::to('estoque/entrada');
     }
 

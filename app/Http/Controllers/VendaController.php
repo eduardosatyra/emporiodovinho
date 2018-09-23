@@ -27,7 +27,7 @@ class VendaController extends Controller {
             ->select('v.id_venda', 'v.data_hora', 'c.nome', 'v.tipo_pagamento', 'v.total_venda')         
             ->where('v.id_venda', 'LIKE', '%'.$query.'%')
             ->orderBy('v.id_venda', 'desc')
-            ->paginate(7);    
+            ->paginate(10);    
 
             return view('venda.venda.index', [
                 "vendas"=>$vendas, "searchText"=>$query
@@ -47,38 +47,32 @@ class VendaController extends Controller {
 
     public function store(VendaFormRequest $request){
 
-        try{
-            DB::beginTransaction();
-            $venda = new Venda;
-            $venda->id_cliente=$request->get('id_cliente');
-            $venda->tipo_comprovante=$request->get('tipo_pagamento');            
-            $mytime = Carbon::now('America/Sao_Paulo');
-            $venda->data_hora=$mytime->toDateTimeString();
-            $venda->total_venda=$request->get('total_venda');
-            $venda->save();
+        $venda = new Venda;
+        $venda->id_cliente=$request->get('id_cliente');
+        $venda->tipo_pagamento=$request->get('tipo_pagamento');            
+        $mytime = Carbon::now('America/Sao_Paulo');
+        $venda->data_hora=$mytime->toDateTimeString();
+        $venda->total_venda=$request->get('total_venda');
+        $venda->save();
 
-            $id_produto=$request->get('id_produto');
-            $quantidade=$request->get('quantidade');
-            $desconto=$request->get('desconto');
-            $preco_venda=$request->get('preco_venda'); 
+        $id_produto=$request->get('id_produto');
+        $quantidade=$request->get('quantidade');
+        $desconto=$request->get('desconto');
+        $preco_venda=$request->get('preco_venda'); 
 
-            $cont = 0;
-            while($cont < count($id_produto)) {
-                $detalhe = new DetalheVenda();
-                $detalhe->id_venda=$venda->id_venda;
-                $detalhe->id_produto=$id_produto[$cont];
-                $detalhe->quantidade=$quantidade[$cont];
-                $detalhe->desconto=$desconto[$cont];
-                $detalhe->preco_venda=$preco_venda[$cont];
-                $detalhe->save();
-                $cont=$cont+1;
+        $cont = 0;
+        while($cont < count($id_produto)) {
+            $detalhe = new DetalheVenda();
+            $detalhe->id_venda=$venda->id_venda;
+            $detalhe->id_produto=$id_produto[$cont];
+            $detalhe->quantidade=$quantidade[$cont];
+            $detalhe->desconto=$desconto[$cont];
+            $detalhe->preco_venda=$preco_venda[$cont];
+            $detalhe->save();
+            $cont=$cont+1;
 
-            }
-
-             DB::commit();            
-       }catch(\Exception $e){
-            DB::rollback();
-       }
+        }
+            
     	return Redirect::to('venda/venda');
     }
 

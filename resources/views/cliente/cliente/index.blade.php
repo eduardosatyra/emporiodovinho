@@ -11,8 +11,7 @@
 	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		<div class="table-responsive">
 			<table class="table table-striped table-bordered table-condensed table-hover">
-				<thead>
-					<th>Id</th>
+				<thead>					
 					<th>Nome</th>
 					<th>Tipo Documento</th>
 					<th>Número Documento</th>
@@ -20,10 +19,10 @@
 					<th>Telefone</th>
 					<th>E-mail</th>
 					<th>Status</th>
+					<th>Ações</th>
 				</thead>
 				@foreach ($clientes as $cli)
-				<tr>
-					<td>{{ $cli->id_cliente}}</td>
+				<tr>					
 					<td>{{ $cli->nome}}</td>
 					<td>{{ $cli->tipo_documento}}</td>
 					<td>{{ $cli->num_doc}}</td>

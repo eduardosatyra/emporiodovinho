@@ -4,13 +4,13 @@ namespace emporiodovinho;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Entrada extends Model {
-    protected $table = 'entrada';  
-	protected $primaryKey = 'id_entrada';
+class Saida extends Model {
+    protected $table = 'saida';  
+	protected $primaryKey = 'id_saida';
 
 	public $timestamps = false;
 	protected $fillable = [
-	'id_fornecedor','tipo_pagamento','data_hora'
+	'id_usuario','data_hora'
 	];
 
 	protected $guarded = [];

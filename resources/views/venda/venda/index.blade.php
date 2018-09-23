@@ -11,8 +11,7 @@
 	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		<div class="table-responsive">
 			<table class="table table-striped table-bordered table-condensed table-hover">
-				<thead>
-					<th>Id</th>
+				<thead>					
 					<th>Data</th>
 					<th>Cliente</th>
 					<th>Tipo de Pagamento</th>					
@@ -21,8 +20,7 @@
 				</thead>
 				
                @foreach ($vendas as $ven)
-				<tr>
-					<td>{{ $ven->id_venda}}</td>
+				<tr>					
 					<td>{{ $ven->data_hora}}</td>
 					<td>{{ $ven->nome}}</td>
 					<td>{{ $ven->tipo_pagamento}}</td>

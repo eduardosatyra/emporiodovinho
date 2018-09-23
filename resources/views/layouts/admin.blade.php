@@ -17,6 +17,7 @@
 <!-- AdminLTE Skins. Choose a skin from the css/skins
     folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="{{asset('css/_all-skins.min.css')}}">
+    <link rel="stylesheet" href="{{asset('css/bootstrap-datepicker.css')}}">
     <link rel="apple-touch-icon" href="{{asset('img/apple-touch-icon.png')}}">
     <link rel="shortcut icon" href="{{asset('img/favicon.ico')}}">
 </head>
@@ -137,7 +138,7 @@
                             <i class="fa fa-angle-left pull-right"></i>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="#"><i class="fa fa-circle-o"></i> fazer aqui..</a></li>
+                            <li><a href="/relatorios/vendas"><i class="fa fa-circle-o"></i>Vendas</a></li>
                         </ul>
                     </li>       
                 </ul>
@@ -180,11 +181,13 @@
     <strong>Copyright &copy; 2018 <a href="#">Empório</a>.</strong> Todos os direitos reservados.
 </footer>
 <!-- jQuery 2.1.4 -->
-<script src="{{asset('js/jQuery-2.1.4.min.js')}}"></script>
+<script src="{{asset('js/jquery.min.js')}}"></script>
 @stack('scripts')
 <script src="{{asset('js/bootstrap-select.min.js')}}"></script>
 <!-- Bootstrap 3.3.5 -->
 <script src="{{asset('js/bootstrap.min.js')}}"></script>
+<script src="{{asset('js/bootstrap-datepicker.min.js')}}"></script>
+<script src="{{asset('js/bootstrap-datepicker.pt-BR.min.js')}}"></script>
 <!-- AdminLTE App -->
 <script src="{{asset('js/app.min.js')}}"></script>
 </body>

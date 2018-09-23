@@ -2,7 +2,7 @@
 @section('conteudo')
 <div class="row">
 	<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-		<h3>Editar Fornecedor: {{ $pessoa->nome }}</h3>
+		<h3>Editar Fornecedor: {{ $fornecedor->nome }}</h3>
 		@if (count($errors)>0)
 		<div class="alert alert-danger">
 			<ul>
@@ -50,7 +50,7 @@
 		<div class="form-group">
 			<label>Sexo</label>
 			<select name="sexo" class="form-control">
-				<option value="{{$cliente->sexo}}"> {{$cliente->sexo}} </option>
+				<option value="{{$fornecedor->sexo}}"> {{$fornecedor->sexo}} </option>
 				<option value="Masculino"> MASCULINO </option>
 				<option value="Feminino"> FEMININO </option> 
 			</select>
