@@ -1,12 +1,12 @@
 @extends('layouts.admin')
 @section('conteudo')
 <div class="row">
-	<div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-		<h3>Lista de Produtos <a href="produto/create"><button class="btn btn-success">Novo</button></a></h3>
+	<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+		<h3>Lista de Produtos</h3>
+		<a  href="produto/create" class="btn btn-success" style="margin-bottom: 10px;"><i class="glyphicon glyphicon-plus-sign"></i> Adicionar produto</a>
 		@include('produto.produto.search')
 	</div>
 </div>
-
 <div class="row">
 	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		<div class="table-responsive">
@@ -15,20 +15,22 @@
 					<th>Código</th>
 					<th>Nome</th>					
 					<th>Categoria</th>
+					<th>Preço de Venda</th>
 					<th>Estoque</th>					
-					<th>Estado</th>
-					<th>Opções</th>
+					<th>Status</th>
+					<th>Ações</th>
 				</thead>
                @foreach ($produtos as $prod)
 				<tr>
 					<td>{{ $prod->codigo}}</td>					
 					<td>{{ $prod->nome}}</td>					
-					<td>{{ $prod->categoria}}</td>
+					<td>{{ $prod->categoria}}</td>					
+					<td>R$ <?php echo number_format($prod->preco_venda, 2, ',', '.') ?></td>
 					<td>{{ $prod->estoque}}</td>
-					<td>{{ $prod->estado}}</td>
+					<td>{{ $prod->status}}</td>
 					<td>
-						<a href="{{URL::action('ProdutoController@edit',$prod->id_produto)}}"><button class="btn btn-info">Editar</button></a>
-                         <a href="" data-target="#modal-delete-{{$prod->id_produto}}" data-toggle="modal"><button class="btn btn-danger">Excluir</button></a>
+						<a href="{{URL::action('ProdutoController@edit',$prod->id_produto)}}" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="top" title="" data-original-title="Editar"><span class="glyphicon glyphicon-edit"></span></a>
+						<a href="" data-target="#modal-delete-{{$prod->id_produto}}" data-toggle="modal" class="deletar btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Deletar"><span class="glyphicon glyphicon-remove"></span></a>                         
 					</td>
 				</tr>
 				@include('produto.produto.modal')

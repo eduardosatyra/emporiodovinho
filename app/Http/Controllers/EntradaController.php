@@ -38,10 +38,10 @@ class EntradaController extends Controller {
     }
 
     public function create(){
-    	$fornecedor=DB::table('fornecedor')->get();
+    	$fornecedor=DB::table('fornecedor')->where('status', '=', 'Ativo')->get();
         $produtos=DB::table('produto as pro')
         ->select('pro.id_produto', 'pro.nome')
-        ->where('pro.estado', '=', 'Ativo')
+        ->where('pro.status', '=', 'Ativo')
         ->get();
         return view('estoque.entrada.create', ["fornecedor"=>$fornecedor, "produtos"=>$produtos]);
     }

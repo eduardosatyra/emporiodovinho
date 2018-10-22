@@ -13,10 +13,15 @@ class Fornecedor extends Model
 	protected $fillable = [
 
 	'nome',
-	'tipo_documento',
-	'sexo',
-	'num_documento', 
-	'endereco', 
+	'tipo_documento',	
+	'num_doc', 
+	'endereco',
+	'cep',
+	'numero',
+	'bairro',
+	'cidade',
+	'estado',
+	'complemento', 
 	'telefone', 
 	'email',
 	'status'

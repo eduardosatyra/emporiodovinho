@@ -3,15 +3,6 @@
 <div class="row">
     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
         <h3>Nova Entrada</h3>
-        @if (count($errors)>0)
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                <li>{{$error}}</li>
-                @endforeach
-            </ul>
-        </div>
-        @endif
     </div>
 </div>
 {!!Form::open(array('url'=>'estoque/entrada','method'=>'POST','autocomplete'=>'off'))!!}
@@ -33,15 +24,15 @@
         <div class="form-group">
             <label>Tipo Pagamento</label>
             <select name="tipo_pagamento" id="tipo_pagamento" class="form-control">
-                <option value="Dinheiro">Dinheiro </option>
-                <option value="Boleto"> Boleto </option>
-                <option value="Cartão">Cartão </option>
+                <option value="dinheiro">Dinheiro </option>
+                <option value="cheque"> Cheque </option>
+                <option value="cartao">Cartão </option>
             </select>
         </div>
     </div>
 </div>
 <div class="row">
-    <div class="panel panel-primary">
+    <div class="panel panel-primary" style="margin-left: 16px; width: 97%;">
         <div class="panel-body">
             <div class="col-lg-4 col-sm-4 col-md-4 col-xs-12">
                 <div class="form-group">
@@ -57,26 +48,41 @@
             </div>
             <div class="col-lg-2 col-sm-2 col-md-2  col-xs-12">
                 <div class="form-group">
-                    <label for="num_doc">Quantidade</label>
+                    <label for="quantidade">Quantidade</label>
                     <input type="number" name="quantidade" value="{{old('quantidade')}}" 
                     id="p_quantidade"
                     class="form-control" placeholder="Quantidade...">
+                    @if ($errors->has('quantidade'))
+                        <span class="text-danger">
+                            {{ $errors->first('quantidade') }}
+                        </span>
+                    @endif
                 </div>
             </div>
-            <div class="col-lg-2 col-sm-2 col-md-2  col-xs-12">
+            <div class="col-lg-2 col-sm-2 col-md-2  col-xs-12">                
                 <div class="form-group">
-                    <label for="num_doc">Preço Compra</label>
-                    <input type="number" name="preco_compra" value="{{old('preco_compra')}}" 
+                    <label for="preco_compra">Preço Compra</label>
+                    <input type="text" name="preco_compra" value="{{old('preco_compra')}}" 
                     id="p_preco_compra"
-                    class="form-control" placeholder="Preço de Compra...">
+                    class="form-control money" placeholder="Preço de Compra...">
+                    @if ($errors->has('preco_compra'))
+                        <span class="text-danger">
+                            {{ $errors->first('preco_compra') }}
+                        </span>
+                    @endif
                 </div>
             </div>
             <div class="col-lg-2 col-sm-2 col-md-2  col-xs-12">
                 <div class="form-group">
-                    <label for="num_doc">Preço Venda</label>
-                    <input type="number" name="preco_venda" value="{{old('preco_venda')}}" 
+                    <label for="preco_venda">Preço Venda</label>
+                    <input type="text" name="preco_venda" value="{{old('preco_venda')}}" 
                     id="p_preco_venda"
-                    class="form-control" placeholder="Preço de Venda...">
+                    class="form-control money" placeholder="Preço de Venda...">
+                    @if ($errors->has('preco_venda'))
+                        <span class="text-danger">
+                            {{ $errors->first('preco_venda') }}
+                        </span>
+                    @endif
                 </div>
             </div>
             <div class="col-lg-2 col-sm-2 col-md-2  col-xs-12">
@@ -114,12 +120,13 @@
         <input name="_token" value="{{ csrf_token() }}"
         type="hidden">
         <button class="btn btn-primary" id="salvar" type="submit">Salvar</button>
-        <button class="btn btn-danger" type="reset">Cancelar</button>
+        <button class="btn btn-default"  onClick="history.go(-1)">Voltar</button>
     </div>
 </div>
 </div>	
 {!!Form::close()!!}		
 @push('scripts')
+<script src="{{asset('js/jquery.min.js')}}"></script>
 <script>
     $(document).ready(function(){
         $('#bt_add').click(function(){
@@ -135,11 +142,13 @@
         produto=$("#p_id_produto option:selected").text();
         quantidade=$("#p_quantidade").val();
         preco_compra=$("#p_preco_compra").val();
-        preco_venda=$("#p_preco_venda").val();
+        preco_venda=$("#p_preco_venda").val();        
+        preco_venda = parseInt(preco_venda);
+        preco_compra = parseInt(preco_compra);             
         if(id_produto!="" && quantidade!="" && quantidade>0 && preco_compra!="" && preco_venda!=""){
             subtotal[cont]=(quantidade*preco_compra);
             total = total + subtotal[cont];
-            var linha = '<tr class="selected" id="linha'+cont+'">    <td> <button type="button" class="btn btn-warning" onclick="apagar('+cont+');"> X </button></td>      <td> <input type="hidden" name="id_produto[]" value="'+id_produto+'">'+produto+'</td>             <td> <input type="number" name="quantidade[]" value="'+quantidade+'"></td>                       <td> <input type="number" name="preco_compra[]" value="'+preco_compra+'"></td>                     <td> <input type="number" name="preco_venda[]" value="'+preco_venda+'"></td>                      <td> '+subtotal[cont]+' </td> </tr>'
+            var linha = '<tr class="selected" id="linha'+cont+'">    <td> <button type="button" class="btn btn-warning" onclick="apagar('+cont+');"> X </button></td>      <td> <input type="hidden" name="id_produto[]" value="'+id_produto+'">'+produto+'</td>             <td> <input type="text" name="quantidade[]" readonly value="'+quantidade+'"></td>                       <td> <input type="text" class="money"  name="preco_compra[]" readonly value="'+preco_compra+'"></td>                     <td> <input type="text" class="money"  name="preco_venda[]" readonly value="'+preco_venda+'"></td><td> '+subtotal[cont]+' </td> </tr>'
             cont++;
             limpar();
             $("#total").html("R$: " + total);

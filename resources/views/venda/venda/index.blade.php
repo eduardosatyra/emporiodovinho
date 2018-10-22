@@ -1,8 +1,9 @@
 @extends('layouts.admin')
 @section('conteudo')
 <div class="row">
-	<div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-		<h3>Lista de Vendas <a href="venda/create"><button class="btn btn-success">Novo</button></a></h3>
+	<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+		<h3>Lista de Vendas</h3>
+		<a  href="venda/create" class="btn btn-success" style="margin-bottom: 10px;"><i class="glyphicon glyphicon-plus-sign"></i> Adicionar venda</a>
 		@include('venda.venda.search')
 	</div>
 </div>
@@ -16,17 +17,17 @@
 					<th>Cliente</th>
 					<th>Tipo de Pagamento</th>					
 					<th>Total</th>					
-					<th>Opções</th>
+					<th>Ações</th>
 				</thead>
 				
                @foreach ($vendas as $ven)
 				<tr>					
-					<td>{{ $ven->data_hora}}</td>
+					<td><?php echo date('d/m/Y H:i:s', strtotime($ven->data_hora)); ?></td>
 					<td>{{ $ven->nome}}</td>
 					<td>{{ $ven->tipo_pagamento}}</td>
-					<td>{{ $ven->total_venda}}</td>
-				<td>					
-					<a href="{{URL::action('VendaController@show',$ven->id_venda)}}"><button class="btn btn-info">Detalhes</button></a>
+					<td>R$ <?php echo number_format($ven->total_venda, 2, ',', '.') ?></td>					
+				<td>
+					<a href="{{URL::action('VendaController@show',$ven->id_venda)}}" class="btn btn-xs btn-info" data-toggle="tooltip" data-placement="top" title="" data-original-title="Visualizar"><span class="glyphicon glyphicon-search"></span></a>
 					</td>
 				</tr>
 				@include('venda.venda.modal')

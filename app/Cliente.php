@@ -13,13 +13,10 @@ class Cliente extends Model
 	protected $fillable = [
 
 	'nome',
-	'tipo_documento',
-	'sexo',
-	'num_documento', 
-	'endereco', 
+	'tipo_documento',	
+	'num_documento', 	
 	'telefone', 
-	'email',
-	'status'
+	'email',	
 
 	];
 

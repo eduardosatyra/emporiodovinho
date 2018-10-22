@@ -4,7 +4,9 @@ namespace emporiodovinho\Http\Controllers;
 
 use Illuminate\Http\Request;
 use DB;
-use Maatwebsite\Excel\Facades\Excel;
+use App\DataTables\RelatoriosDatatable;
+use emporiodovinho\User;
+use Yajra\Datatables\Datatables;
 
 class RelatorioController extends Controller {
     public function __construct(){
@@ -19,7 +21,7 @@ class RelatorioController extends Controller {
     public function produtos(){
         $produtos=DB::table('produto as pro')
         ->select('pro.id_produto', 'pro.nome')
-        ->where('pro.estado', '=', 'Ativo')
+        ->where('pro.status', '=', 'Ativo')
         ->get();
 
         $categorias=DB::table('categoria')
@@ -33,22 +35,61 @@ class RelatorioController extends Controller {
         return view('relatorios.vendas.cliente', ["cliente"=>$cliente]);
     }
 
-    public function buscaVendasCliente(Request $request){
-        $role = $request->id_cliente;
-        $data_inicial = $request->data_inicial;
-        $data_final = $request->data_final;
-        $vendasCliente = DB::table('venda')
+    public function getVendas(Request $request){
+        $data_inicial = date('Y-m-d', strtotime(str_replace('/', '-', $request->data_inicial)));
+        $data_final = date('Y-m-d', strtotime(str_replace('/', '-', $request->data_final)));
+        $data = DB::table('venda')
                         ->join('cliente', 'cliente.id_cliente', '=', 'venda.id_cliente')
                         ->select('cliente.nome', 'venda.tipo_pagamento', 'venda.data_hora', 'venda.total_venda')
-                        ->where('data_hora' ,'>=' , $data_inicial)
-                        ->where('data_hora' ,'<=' , $data_final)
-                        ->when($role, function ($query, $role) {
-                            return $query->where('venda.id_cliente', $role);
-                        })
+                        ->whereRaw("date(venda.data_hora) BETWEEN DATE('$data_inicial') AND DATE('$data_final')")
+                        ->orderBy('venda.id_venda', 'desc')                        
                         ->get();
+        foreach ($data as $key => $value) {
+             $value->total_venda = 'R$ '.number_format($value->total_venda, 2, ',', '.');
+             $value->data_hora = date('d/m/Y H:i:s', strtotime($value->data_hora)); 
+        }             
+        return response()->json($data);   
+    }
 
-        return response()->json($vendasCliente);
+    public function getProdutosVendidos(Request $request){
+        $produto = $request->produto == 'all' ? false : $request->produto;
+        $data_inicial = date('Y-m-d', strtotime(str_replace('/', '-', $request->data_inicial)));
+        $data_final = date('Y-m-d', strtotime(str_replace('/', '-', $request->data_final)));
+        $data = DB::table('detalhe_venda')
+                        ->join('produto', 'produto.id_produto', '=', 'detalhe_venda.id_produto')
+                        ->join('categoria', 'categoria.id_categoria', '=', 'produto.id_categoria')
+                        ->join('venda', 'venda.id_venda', '=', 'detalhe_venda.id_venda')
+                        ->select( DB::raw('detalhe_venda.id_produto as cod, produto.nome as produto, categoria.nome as categoria, produto.preco_venda as preco_venda,sum( detalhe_venda.quantidade ) as quantidade') )
+                        ->whereRaw("date(venda.data_hora) BETWEEN DATE('$data_inicial') AND DATE('$data_final')")
+                        ->when($produto, function ($query, $produto) {
+                            return $query->where('detalhe_venda.id_produto', $produto);
+                        })
+                        ->groupBy('detalhe_venda.id_produto')
+                        ->orderBy('quantidade', 'desc')                        
+                        ->get();
+        foreach ($data as $key => $value) {
+            $value->preco_venda = 'R$ '.number_format($value->preco_venda, 2, ',', '.');            
+        } 
 
+        return response()->json($data);   
+    }
+
+    public function getEstoqueMinimo(){
+        return view('relatorios.produtos.estoque-minimo');        
+    }
+
+    public function estoqueMinimo(){
+        $data=DB::table('produto')
+        ->select('*')
+        ->whereRaw("estoque <= estoque_minimo")
+        ->where('status', '=', 'Ativo')
+        ->get();
+
+        foreach ($data as $key => $value) {
+            $value->preco_venda = 'R$ '.number_format($value->preco_venda, 2, ',', '.');            
+        } 
+
+        return response()->json($data);        
     }
 
     

@@ -3,28 +3,14 @@
 <div class="row">
 		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 			<h3>Nova Venda</h3>
-			@if (count($errors)>0)
-			<div class="alert alert-danger">
-				<ul>
-				@foreach ($errors->all() as $error)
-					<li>{{$error}}</li>
-				@endforeach
-				</ul>
-			</div>
-			@endif
 		</div>
 	</div>
-
 			{!!Form::open(array('url'=>'venda/venda','method'=>'POST','autocomplete'=>'off'))!!}
             {{Form::token()}}
-           
-
-            <div class="row">
-            	
+            <div class="row">            	
             	<div class="col-lg-6 col-sm-6 col-xs-6">
 	            	<div class="form-group">
-	            	<label for="nome">Cliente</label>
-	            	
+	            	<label for="nome">Cliente</label>	            	
                         <select name="id_cliente" id="id_cliente" class="form-control selectpicker" data-live-search="true">
                               @foreach($cliente as $cli)
                               <option value="{{$cli->id_cliente}}">
@@ -39,9 +25,9 @@
             		<div class="form-group">
             		<label>Tipo Pagamento</label>
             		<select name="tipo_pagamento" id="tipo_pagamento" class="form-control">
-                              <option value="Dinheiro">Dinheiro </option>
-	            		<option value="Boleto"> Boleto </option>
-	            		<option value="Cartão">Cartão </option>
+                        <option value="dinheiro">Dinheiro </option>	            		
+	            		<option value="cartao">Cartão </option>
+	            		<option value="cheque">Cheque </option>
             		</select>
             		</div>
             	</div>
@@ -49,7 +35,7 @@
            
       <div class="row">
 
-            <div class="panel panel-primary">
+            <div class="panel panel-primary" style="margin-left: 16px; width: 97%;">
                   <div class="panel-body">
                         <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12">
                               <div class="form-group">
@@ -77,6 +63,11 @@
                               <input type="number" name="quantidade"  
                               id="p_quantidade"
                               class="form-control" placeholder="Quantidade...">
+                              @if ($errors->has('quantidade'))
+                                    <span class="text-danger">
+                                          {{ $errors->first('quantidade') }}
+                                    </span>
+                              @endif
                               </div>
                         </div>
                         <div class="col-lg-2 col-sm-2 col-md-2  col-xs-12">
@@ -84,6 +75,11 @@
                               <label for="num_doc">Preço Venda</label>
                               <input type="number" name="preco_venda" id="p_preco_venda"
                               class="form-control" placeholder="Preço de Venda..." disabled>
+                              @if ($errors->has('preco_venda'))
+                                    <span class="text-danger">
+                                          {{ $errors->first('preco_venda') }}
+                                    </span>
+                              @endif
                               </div>
                         </div>
                         <div class="col-lg-2 col-sm-2 col-md-2  col-xs-12">
@@ -99,8 +95,7 @@
                               <button type="button" id="bt_add"
                               class="btn btn-primary">
                               Adicionar
-                              </button>
-                              
+                              </button>                              
                               </div>
                         </div>
 
@@ -132,11 +127,10 @@
 
                   <div class="col-lg-12 col-sm-12 col-md-12  col-xs-12" id="salvar">
                   <div class="form-group">
-
                         <input name="_token" value="{{ csrf_token() }}"
                          type="hidden">
                   	<button class="btn btn-primary" id="salvar" type="submit">Salvar</button>
-                  	<button class="btn btn-danger" type="reset">Cancelar</button>
+                  	<button class="btn btn-default"  onClick="history.go(-1)">Voltar</button>
                   </div>
                  </div>
 
@@ -144,7 +138,7 @@
       {!!Form::close()!!}		
             
 @push('scripts')
-
+<script src="{{asset('js/jquery.min.js')}}"></script>
 <script>
 
 $(document).ready(function(){
@@ -175,6 +169,8 @@ function adicionar(){
       desconto=$("#p_desconto").val();
       preco_venda=$("#p_preco_venda").val();
       estoque=$("#estoque_atual").val();
+      estoque = parseInt(estoque);
+      quantidade = parseInt(quantidade);
 
       if(id_produto!="" && quantidade!="" && quantidade>0 && preco_venda!=""){
             if(estoque >= quantidade){                  

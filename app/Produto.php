@@ -15,10 +15,11 @@ class Produto extends Model
     'codigo',
     'nome',
     'estoque',
+    'estoque_minimo',
     'preco_compra',
     'preco_venda',
     'descricao',    
-    'estado'
+    'status'
 
     ];
 

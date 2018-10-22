@@ -36,10 +36,10 @@ class VendaController extends Controller {
     }
 
     public function create(){
-    	$cliente=DB::table('cliente')->get();
+    	$cliente=DB::table('cliente')->where('status', '=', 'Ativo')->get();
         $produtos=DB::table('produto as pro')        
         ->select('pro.id_produto', 'pro.nome', 'pro.estoque', 'pro.preco_venda')
-        ->where('pro.estado', '=', 'Ativo')
+        ->where('pro.status', '=', 'Ativo')
         ->where('pro.estoque', '>' , '0')
         ->get();
         return view('venda.venda.create', ["cliente"=>$cliente, "produtos"=>$produtos]);

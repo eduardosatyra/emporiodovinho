@@ -17,15 +17,17 @@
 <!-- AdminLTE Skins. Choose a skin from the css/skins
     folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="{{asset('css/_all-skins.min.css')}}">
-    <link rel="stylesheet" href="{{asset('css/bootstrap-datepicker.css')}}">
+    <link rel="stylesheet" href="{{asset('css/bootstrap-datepicker.css')}}">   
     <link rel="apple-touch-icon" href="{{asset('img/apple-touch-icon.png')}}">
     <link rel="shortcut icon" href="{{asset('img/favicon.ico')}}">
+    <link rel="stylesheet" href="{{asset('css/jquery.dataTables.min.css')}}">
+    <link rel="stylesheet" href="{{asset('css/buttons.dataTables.min.css')}}">
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
     <div class="wrapper">
         <header class="main-header">
             <!-- Logo -->
-            <a href="index2.html" class="logo">
+            <a href="/principal" class="logo" style="background-color: #4a148c;">
                 <!-- mini logo for sidebar mini 50x50 pixels -->
                 <span class="logo-mini"><b>EV</b>V</span>
                 <!-- logo for regular state and mobile devices -->
@@ -69,6 +71,12 @@
             <section class="sidebar">
                 <ul class="sidebar-menu">
                     <li class="header"></li>
+                    <li class="treeview">
+                        <a href="/principal">
+                            <i class="fa fa-th" aria-hidden="true"></i>
+                            <span>Principal</span>                            
+                        </a>
+                    </li>
                     <li class="treeview">
                         <a href="#">
                             <i class="fa fa-laptop"></i>
@@ -153,9 +161,6 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="box">
-                            <div class="box-header with-border">
-                                <h3 class="box-title">Sistema de Vendas</h3>                                
-                            </div>
                             <!-- /.box-header -->
                             <div class="box-body">
                                 <div class="row">
@@ -181,13 +186,25 @@
     <strong>Copyright &copy; 2018 <a href="#">Empório</a>.</strong> Todos os direitos reservados.
 </footer>
 <!-- jQuery 2.1.4 -->
-<script src="{{asset('js/jquery.min.js')}}"></script>
+
 @stack('scripts')
+<script src="{{asset('js/jquery.min.js')}}"></script>
 <script src="{{asset('js/bootstrap-select.min.js')}}"></script>
 <!-- Bootstrap 3.3.5 -->
 <script src="{{asset('js/bootstrap.min.js')}}"></script>
 <script src="{{asset('js/bootstrap-datepicker.min.js')}}"></script>
 <script src="{{asset('js/bootstrap-datepicker.pt-BR.min.js')}}"></script>
+<script src="{{asset('js/jquery.dataTables.min.js')}}"></script>
+
+<script src="{{asset('js/dataTables.buttons.min.js')}}"></script>
+<script src="{{asset('js/buttons.flash.min.js')}}"></script>
+<script src="{{asset('js/jszip.min.js')}}"></script>
+<script src="{{asset('js/pdfmake.min.js')}}"></script>
+<script src="{{asset('js/vfs_fonts.js')}}"></script>
+<script src="{{asset('js/buttons.html5.min.js')}}"></script>
+<script src="{{asset('js/buttons.print.min.js')}}"></script>
+<script src="{{asset('js/jquery.mask.min.js')}}"></script>
+<script src="{{asset('js/mascaras.js')}}"></script>
 <!-- AdminLTE App -->
 <script src="{{asset('js/app.min.js')}}"></script>
 </body>

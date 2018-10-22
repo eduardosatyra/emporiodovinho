@@ -10,24 +10,33 @@ use DB;
 
 class ClienteController extends Controller
 {
-    
+
     public function __construct(){
     	$this->middleware('auth');
     }
 
     public function index(Request $request){
 
-        if($request){
+        if($request->get('searchText')){
             $query=trim($request->get('searchText'));
             $clientes=DB::table('cliente')
             ->where('nome', 'LIKE', '%'.$query.'%')
             ->orwhere('num_doc', 'LIKE', '%'.$query.'%')
+            ->where('status', '=', 'Ativo')
             ->orderBy('id_cliente', 'desc')
-            ->paginate(7);
+            ->paginate(10);
             return view('cliente.cliente.index', [
                 "clientes"=>$clientes, "searchText"=>$query
                 ]);
         }
+
+        $clientes=DB::table('cliente')            
+            ->where('status', '=', 'Ativo')
+            ->orderBy('id_cliente', 'desc')
+            ->paginate(10);
+            return view('cliente.cliente.index', [
+                "clientes"=>$clientes, "searchText"=>''
+                ]);
     }
 
     public function create(){
@@ -39,11 +48,8 @@ class ClienteController extends Controller
     	$cliente->nome=$request->get('nome');
     	$cliente->tipo_documento=$request->get('tipo_documento');
     	$cliente->num_doc=$request->get('num_doc');
-        $cliente->sexo=$request->get('sexo');
-    	$cliente->endereco=$request->get('endereco');
     	$cliente->telefone=$request->get('telefone');
     	$cliente->email=$request->get('email');
-        $cliente->status=$request->get('status');
     	$cliente->save();
     	return Redirect::to('cliente/cliente');
     }
@@ -63,10 +69,8 @@ class ClienteController extends Controller
     	$cliente->nome=$request->get('nome');
     	$cliente->tipo_documento=$request->get('tipo_documento');
     	$cliente->num_doc=$request->get('num_doc');
-    	$cliente->endereco=$request->get('endereco');
     	$cliente->telefone=$request->get('telefone');
     	$cliente->email=$request->get('email');
-        $cliente->status=$request->get('status');
     	$cliente->update();
     	return Redirect::to('cliente/cliente');
     }

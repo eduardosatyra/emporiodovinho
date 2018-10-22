@@ -1,8 +1,9 @@
 @extends('layouts.admin')
 @section('conteudo')
 <div class="row">
-	<div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-		<h3>Lista de Saidas <a href="saida/create"><button class="btn btn-success">Novo</button></a></h3>
+	<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+		<h3>Lista de Saidas</h3>
+		<a href="saida/create" class="btn btn-success" style="margin-bottom: 10px;"><i class="glyphicon glyphicon-plus-sign"></i> Adicionar saída</a>
 		@include('estoque.saida.search')
 	</div>
 </div>
@@ -19,10 +20,10 @@
 				@foreach ($saidas as $sai)
 				<tr>
 					<td>{{ $sai->id_saida}}</td>
-					<td>{{ $sai->data_hora}}</td>
+					<td><?php echo date('d/m/Y H:i:s', strtotime($sai->data_hora)); ?></td>					
 					<td>{{ $sai->name}}</td>
-					<td>					
-						<a href="{{URL::action('SaidaController@show',$sai->id_saida)}}"><button class="btn btn-info">Detalhes</button></a>
+					<td>
+						<a href="{{URL::action('SaidaController@show',$sai->id_saida)}}" class="btn btn-xs btn-info" data-toggle="tooltip" data-placement="top" title="" data-original-title="Visualizar"><span class="glyphicon glyphicon-search"></span></a>
 					</td>
 				</tr>
 				@include('estoque.saida.modal')

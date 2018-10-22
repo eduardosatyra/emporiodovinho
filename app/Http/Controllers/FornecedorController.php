@@ -16,33 +16,37 @@ class FornecedorController extends Controller {
 
     public function index(Request $request){
 
-        if($request){
+        if($request->get('searchText')){
             $query=trim($request->get('searchText'));
-            $fornecedor=DB::table('fornecedor')
-            ->where('nome', 'LIKE', '%'.$query.'%')
-            ->orwhere('num_doc', 'LIKE', '%'.$query.'%')
+            $fornecedor=DB::table('fornecedor')            
+            ->orWhere('nome', 'LIKE', '%'.$query.'%')           
+            ->orWhere('num_doc', 'LIKE', '%'.$query.'%')
+            ->where('status', '=', 'Ativo')
             ->orderBy('id_fornecedor', 'desc')
-            ->paginate(7);
+            ->paginate(10);            
             return view('fornecedor.fornecedor.index', [
                 "fornecedor"=>$fornecedor, "searchText"=>$query
                 ]);
         }
+           
+            $fornecedor=DB::table('fornecedor')
+            ->where('status', '=', 'Ativo')
+            ->orderBy('id_fornecedor', 'desc')
+            ->paginate(10);            
+            return view('fornecedor.fornecedor.index', [
+                "fornecedor"=>$fornecedor, "searchText"=>''
+                ]);
+       
     }
 
     public function create(){
     	return view("fornecedor.fornecedor.create");
     }
 
-    public function store(FornecedorFormRequest $request){
+    public function store(FornecedorFormRequest $request){        
     	$fornecedor = new Fornecedor;
-    	$fornecedor->nome=$request->get('nome');
-    	$fornecedor->tipo_documento=$request->get('tipo_documento');
-    	$fornecedor->num_doc=$request->get('num_doc');
-    	$fornecedor->endereco=$request->get('endereco');
-    	$fornecedor->telefone=$request->get('telefone');
-    	$fornecedor->email=$request->get('email');
-        $fornecedor->sexo=$request->get('sexo');
-        $fornecedor->status=$request->get('status');
+        $data = $request->all();
+        $fornecedor->fill($data);
     	$fornecedor->save();
     	return Redirect::to('fornecedor/fornecedor');
     }
@@ -58,20 +62,14 @@ class FornecedorController extends Controller {
     }
 
     public function update(FornecedorFormRequest $request, $id){
-    	$pessoa=Pessoa::findOrFail($id);    	
-    	$fornecedor->nome=$request->get('nome');
-        $fornecedor->tipo_documento=$request->get('tipo_documento');
-        $fornecedor->num_doc=$request->get('num_doc');
-        $fornecedor->endereco=$request->get('endereco');
-        $fornecedor->telefone=$request->get('telefone');
-        $fornecedor->email=$request->get('email');
-        $fornecedor->sexo=$request->get('sexo');
-        $fornecedor->status=$request->get('status');
+    	$fornecedor=Fornecedor::findOrFail($id);
+        $data = $request->all();
+        $fornecedor->fill($data);
     	$fornecedor->update();
     	return Redirect::to('fornecedor/fornecedor');
     }
 
-    public function destroy($id){
+    public function destroy($id){       
     	$fornecedor=Fornecedor::findOrFail($id);
     	$fornecedor->status='Inativo';
     	$fornecedor->update();

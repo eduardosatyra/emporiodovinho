@@ -31,7 +31,13 @@ class FornecedorFormRequest extends FormRequest
             'endereco'=> 'max:100',
             'telefone'=> 'max:20',       
             'email'=> 'max:50',
-            'status'=> 'required'
+            'status'=> 'required',
+            'cep'=> 'max:12',
+            'endereco'=> 'max:255',
+            'bairro'=> 'max:255',
+            'cidade'=> 'max:255',
+            'estado'=> 'max:255',
+            'complemento'=> 'max:255'
             ];
     }
 }

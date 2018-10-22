@@ -1,8 +1,9 @@
 @extends('layouts.admin')
 @section('conteudo')
 <div class="row">
-	<div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-		<h3>Lista de Usuários <a href="usuario/create"><button class="btn btn-success">Novo</button></a></h3>
+	<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+		<h3>Lista de Usuários</h3>
+		<a  href="usuario/create" class="btn btn-success" style="margin-bottom: 10px;"><i class="glyphicon glyphicon-plus-sign"></i> Adicionar usuário</a>
 		@include('usuario.usuario.search')
 	</div>
 </div>
@@ -23,8 +24,8 @@
 					<td>{{ $user->name}}</td>
 					<td>{{ $user->email}}</td>
 					<td>
-						<a href="{{URL::action('UsuarioController@edit',$user->id)}}"><button class="btn btn-info">Editar</button></a>
-						<a href="" data-target="#modal-delete-{{$user->id}}" data-toggle="modal"><button class="btn btn-danger">Excluir</button></a>
+						<a href="{{URL::action('UsuarioController@edit',$user->id)}}" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="top" title="" data-original-title="Editar"><span class="glyphicon glyphicon-edit"></span></a>
+						<a href="" data-target="#modal-delete-{{$user->id}}" data-toggle="modal" class="deletar btn btn-xs btn-danger" data-placement="top" title="" data-original-title="Deletar"><span class="glyphicon glyphicon-remove"></span></a>
 					</td>
 				</tr>
 				@include('usuario.usuario.modal')

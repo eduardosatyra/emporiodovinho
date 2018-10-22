@@ -1,8 +1,9 @@
 @extends('layouts.admin')
 @section('conteudo')
 <div class="row">
-	<div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-		<h3>Lista de Entradas <a href="entrada/create"><button class="btn btn-success">Novo</button></a></h3>
+	<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+		<h3>Lista de Entradas</h3>
+		<a  href="entrada/create" class="btn btn-success" style="margin-bottom: 10px;"><i class="glyphicon glyphicon-plus-sign"></i> Adicionar entrada</a>
 		@include('estoque.entrada.search')
 	</div>
 </div>
@@ -11,20 +12,20 @@
 		<div class="table-responsive">
 			<table class="table table-striped table-bordered table-condensed table-hover">
 				<thead>
-					<th>Data</th>
+					<th>Data e hora</th>
 					<th>Fornecedor</th>
 					<th>Tipo Pagamento</th>
 					<th>Total</th>
-					<th>Opções</th>
+					<th>Ações</th>
 				</thead>
 				@foreach ($entradas as $ent)
-				<tr>
-					<td>{{ $ent->data_hora}}</td>
+				<tr>					
+					<td><?php echo date('d/m/Y H:i:s', strtotime($ent->data_hora)); ?></td>
 					<td>{{ $ent->nome}}</td>
 					<td>{{ $ent->tipo_pagamento}}</td>
-					<td>{{ $ent->total}}</td>
-					<td>					
-						<a href="{{URL::action('EntradaController@show',$ent->id_entrada)}}"><button class="btn btn-info">Detalhes</button></a>
+					<td>R$ <?php echo number_format($ent->total, 2, ',', '.') ?></td>					
+					<td>
+					<a href="{{URL::action('EntradaController@show',$ent->id_entrada)}}" class="btn btn-xs btn-info" data-toggle="tooltip" data-placement="top" title="" data-original-title="Visualizar"><span class="glyphicon glyphicon-search"></span></a>
 					</td>
 				</tr>
 				@include('estoque.entrada.modal')

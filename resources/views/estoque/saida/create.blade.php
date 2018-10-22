@@ -17,7 +17,7 @@
 {!!Form::open(array('url'=>'estoque/saida','method'=>'POST','autocomplete'=>'off'))!!}
 {{Form::token()}}
 <div class="row">
-    <div class="panel panel-primary">
+    <div class="panel panel-primary" style="margin-left: 16px; width: 97%;">
         <div class="panel-body">
             <div class="col-lg-4 col-sm-4 col-md-4 col-xs-12">
                 <div class="form-group">
@@ -32,13 +32,13 @@
                     </select>
                 </div>
             </div>
-            <div class="col-lg-2 col-sm-2 col-md-2  col-xs-12">
+            <div class="col-lg-3 col-sm-3 col-md-3  col-xs-12">
                 <div class="form-group">
                     <label for="num_doc">Estoque Atual</label>                            
                     <input type="text" readonly="true" id="estoque_atual" class="form-control" value="">
                 </div>
             </div>
-            <div class="col-lg-2 col-sm-2 col-md-2  col-xs-12">
+            <div class="col-lg-3 col-sm-3 col-md-3  col-xs-12">
                 <div class="form-group">
                     <label for="num_doc">Quantidade</label>
                     <input type="number" name="quantidade" value="{{old('quantidade')}}" 
@@ -46,22 +46,20 @@
                     class="form-control" placeholder="Quantidade...">
                 </div>
             </div>
-            <div class="col-lg-2 col-sm-2 col-md-2  col-xs-12">
+            <div class="col-lg-10 col-sm-10 col-md-10  col-xs-12">
                 <div class="form-group">
                     <label for="num_doc">Motivo</label>
-                    <input type="text" name="motivo" value="{{old('motivo')}}" 
-                    id="motivo"
-                    class="form-control" placeholder="Motivo...">
+                    <textarea name="motivo" id="motivo" class="form-control"></textarea> 
                 </div>
-            </div>            
+            </div>
             <div class="col-lg-2 col-sm-2 col-md-2  col-xs-12">
                 <div class="form-group">
                     <button type="button" id="bt_add"
                     class="btn btn-primary" style="margin-top: 24px;">
                     Adicionar
                 </button>
+                </div>
             </div>
-        </div>
         <div class="col-lg-12 col-sm-12 col-md-12  col-xs-12">
             <table id="detalhes" class="table table-striped table-bordered table-condensed table-hover">
                 <thead style="background-color:#A9D0F5">
@@ -79,7 +77,7 @@
         <input name="_token" value="{{ csrf_token() }}"
         type="hidden">
         <button class="btn btn-primary" id="salvar" type="submit">Salvar</button>
-        <button class="btn btn-danger" type="reset">Cancelar</button>
+        <button class="btn btn-default"  onClick="history.go(-1)">Voltar</button>
     </div>
 </div>
 </div>	
@@ -102,6 +100,9 @@
         quantidade=$("#p_quantidade").val();
         motivo=$("#motivo").val();
         estoque=$("#estoque_atual").val();
+        estoque = parseInt(estoque);
+        quantidade = parseInt(quantidade);
+
         if(id_produto!="" && quantidade!="" && quantidade>0 && motivo!=""){
             if(estoque >= quantidade){
                 var linha = '<tr class="selected" id="linha'+cont+'">    <td> <button type="button" class="btn btn-warning" onclick="apagar('+cont+');"> X </button></td>      <td> <input type="hidden" name="id_produto[]" value="'+id_produto+'">'+produto+'</td>             <td> <input type="number" name="quantidade[]" value="'+quantidade+'"></td>                       <td> <input type="text" name="motivo[]" value="'+motivo+'"></td></tr>'
