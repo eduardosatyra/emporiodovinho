@@ -83,6 +83,7 @@
 </div>	
 {!!Form::close()!!}		
 @push('scripts')
+<script src="{{asset('js/jquery.min.js')}}"></script>
 <script>
     $("#p_id_produto").change(mostrarValores);
     $(document).ready(function(){
@@ -112,10 +113,10 @@
                 limpar();
                 $('#detalhes').append(linha);
             }else{
-                alert("A quantidade de saida não pode ser maior que o estoque.");
+                bootbox.alert("A quantidade de saida não pode ser maior que o estoque.");
             }
         }else{
-            alert("Erro ao inserir os detalhes, preencha os campos corretamente!!");
+            bootbox.alert("Erro ao inserir os detalhes, preencha os campos corretamente!!");
         }
     }
     function limpar(){

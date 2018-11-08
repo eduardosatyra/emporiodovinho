@@ -38,7 +38,7 @@ class VendaController extends Controller {
     public function create(){
     	$cliente=DB::table('cliente')->where('status', '=', 'Ativo')->get();
         $produtos=DB::table('produto as pro')        
-        ->select('pro.id_produto', 'pro.nome', 'pro.estoque', 'pro.preco_venda')
+        ->select('pro.codigo', 'pro.id_produto', 'pro.nome', 'pro.estoque', 'pro.preco_venda')
         ->where('pro.status', '=', 'Ativo')
         ->where('pro.estoque', '>' , '0')
         ->get();
@@ -46,13 +46,13 @@ class VendaController extends Controller {
     }
 
     public function store(VendaFormRequest $request){
-
         $venda = new Venda;
         $venda->id_cliente=$request->get('id_cliente');
         $venda->tipo_pagamento=$request->get('tipo_pagamento');            
         $mytime = Carbon::now('America/Sao_Paulo');
         $venda->data_hora=$mytime->toDateTimeString();
-        $venda->total_venda=$request->get('total_venda');
+        $total = str_replace(',','.',str_replace('.','',$request->get('total_atual')));
+        $venda->total_venda=$total;
         $venda->save();
 
         $id_produto=$request->get('id_produto');

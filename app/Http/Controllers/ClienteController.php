@@ -43,15 +43,16 @@ class ClienteController extends Controller
     	return view("cliente.cliente.create");
     }
 
-    public function store(ClienteFormRequest $request){
+    public function store(ClienteFormRequest $request){        
     	$cliente = new Cliente;
     	$cliente->nome=$request->get('nome');
     	$cliente->tipo_documento=$request->get('tipo_documento');
     	$cliente->num_doc=$request->get('num_doc');
     	$cliente->telefone=$request->get('telefone');
     	$cliente->email=$request->get('email');
+        $cliente->status= "Ativo";
     	$cliente->save();
-    	return Redirect::to('cliente/cliente');
+    	return back();
     }
 
     public function show($id){

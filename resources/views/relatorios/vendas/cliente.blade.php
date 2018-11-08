@@ -36,6 +36,7 @@ $(document).ready(function() {
         $('#listar-venda').DataTable({
             "processing": true,
             "serverSide": false,
+            "order": [[ 2, "desc" ]],
             "language": {
                 "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Portuguese-Brasil.json"
             },

@@ -40,7 +40,7 @@
 							<td>{{$det->quantidade}}</td>
 							<td>{{$det->preco_compra}}</td>
 							<td>{{$det->preco_venda}}</td>
-							<td>{{$det->quantidade*$det->preco_compra}}</td>
+							<td><?php echo number_format($det->quantidade*$det->preco_compra,2,",",".");?></td>
 						</tr>
 						@endforeach
 					</tbody>

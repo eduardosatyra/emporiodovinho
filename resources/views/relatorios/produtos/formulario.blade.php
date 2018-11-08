@@ -9,6 +9,7 @@
         <div class="pull-right">
             <select name="id_produto" id="id_produto" class="selectpicker" data-live-search="true">
                <option value="all">Selecione um produto..</option>
+               <option value="all">Todos</option>
                 @foreach($produtos as $pro)                                    
                     <option value="{{$pro->id_produto}}">
                     {{$pro->nome}}
@@ -47,6 +48,7 @@ $(document).ready(function() {
         $('#listar-produtos').DataTable({
             "processing": true,
             "serverSide": false,
+            "order": [[ 3, "desc" ]],
             "language": {
                 "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Portuguese-Brasil.json"
             },

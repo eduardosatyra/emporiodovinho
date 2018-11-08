@@ -30,7 +30,7 @@ class VendaFormRequest extends FormRequest
             'id_produto'=>'required',
             'quantidade'=>'required',
             'preco_venda'=>'required',            
-            'total_venda' => 'required'
+            'total_atual' => 'required'
         ];
     }
 }

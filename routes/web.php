@@ -3,7 +3,8 @@
 Route::get('/', function () {
     return view('auth/login');
 });
-Route::get('/principal' , 'DashboardController@getDashboard');
+Route::get('/principal' , 'DashboardController@getPrincipal');
+Route::get('/dashboard' , 'DashboardController@getDashboard');
 Route::resource('produto/categoria', 'CategoriaController');
 Route::resource('produto/produto', 'ProdutoController');
 Route::resource('cliente/cliente', 'ClienteController');
@@ -19,6 +20,7 @@ Route::get('relatorios/vendas/cliente', 'RelatorioController@vendasCliente');
 Route::get('relatorios/produtos/relatorio-estoque-minimo', 'RelatorioController@estoqueMinimo')->name('relatorio.produto.estoque-minimo');
 Route::post('relatorio/vendas/cliente/filtro', 'RelatorioController@getVendas')->name('relatorio.data');
 Route::post('relatorio/vendas/produtos/vendidos', 'RelatorioController@getProdutosVendidos')->name('relatorio.produto');
+Route::get('/comandas', 'ComandaController@index');
 
 
 

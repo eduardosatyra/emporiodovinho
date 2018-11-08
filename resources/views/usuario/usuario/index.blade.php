@@ -12,15 +12,13 @@
 	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		<div class="table-responsive">
 			<table class="table table-striped table-bordered table-condensed table-hover">
-				<thead>
-					<th>Id</th>
+				<thead>					
 					<th>Nome</th>
 					<th>Email</th>
 					<th>Opções</th>
 				</thead>
 				@foreach ($usuarios as $user)
-				<tr>
-					<td>{{ $user->id}}</td>
+				<tr>					
 					<td>{{ $user->name}}</td>
 					<td>{{ $user->email}}</td>
 					<td>

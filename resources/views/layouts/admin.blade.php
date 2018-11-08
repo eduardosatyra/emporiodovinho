@@ -10,6 +10,7 @@
     <!-- Bootstrap 3.3.5 -->
     <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{asset('css/bootstrap-select.min.css')}}">
+    <link rel="stylesheet" href="{{asset('css/venda.css')}}">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{asset('css/font-awesome.css')}}">
     <!-- Theme style -->
@@ -22,6 +23,7 @@
     <link rel="shortcut icon" href="{{asset('img/favicon.ico')}}">
     <link rel="stylesheet" href="{{asset('css/jquery.dataTables.min.css')}}">
     <link rel="stylesheet" href="{{asset('css/buttons.dataTables.min.css')}}">
+    <link rel="stylesheet" href="{{asset('css/dashboard.css')}}">
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
     <div class="wrapper">
@@ -77,6 +79,12 @@
                             <span>Principal</span>                            
                         </a>
                     </li>
+                    <li class="treeview">
+                        <a href="/dashboard">
+                            <i class="fa fa-bar-chart" aria-hidden="true"></i> 
+                            <span>Dashboard</span>                            
+                        </a>
+                    </li> 
                     <li class="treeview">
                         <a href="#">
                             <i class="fa fa-laptop"></i>
@@ -205,6 +213,8 @@
 <script src="{{asset('js/buttons.print.min.js')}}"></script>
 <script src="{{asset('js/jquery.mask.min.js')}}"></script>
 <script src="{{asset('js/mascaras.js')}}"></script>
+<script src="{{asset('js/bootbox.min.js')}}"></script>
+<script src="{{asset('js/chart.js')}}"></script>
 <!-- AdminLTE App -->
 <script src="{{asset('js/app.min.js')}}"></script>
 </body>

@@ -141,21 +141,23 @@
         id_produto=$("#p_id_produto").val();
         produto=$("#p_id_produto option:selected").text();
         quantidade=$("#p_quantidade").val();
-        preco_compra=$("#p_preco_compra").val();
-        preco_venda=$("#p_preco_venda").val();        
-        preco_venda = parseInt(preco_venda);
-        preco_compra = parseInt(preco_compra);             
+        preco_compra= $("#p_preco_compra").val();
+        preco_compra = preco_compra.replace(".", "");
+        preco_compra = preco_compra.replace(",", ".");
+        preco_venda=$("#p_preco_venda").val();
+        preco_venda = preco_venda.replace(".", "");
+        preco_venda = preco_venda.replace(",", ".");             
         if(id_produto!="" && quantidade!="" && quantidade>0 && preco_compra!="" && preco_venda!=""){
             subtotal[cont]=(quantidade*preco_compra);
             total = total + subtotal[cont];
-            var linha = '<tr class="selected" id="linha'+cont+'">    <td> <button type="button" class="btn btn-warning" onclick="apagar('+cont+');"> X </button></td>      <td> <input type="hidden" name="id_produto[]" value="'+id_produto+'">'+produto+'</td>             <td> <input type="text" name="quantidade[]" readonly value="'+quantidade+'"></td>                       <td> <input type="text" class="money"  name="preco_compra[]" readonly value="'+preco_compra+'"></td>                     <td> <input type="text" class="money"  name="preco_venda[]" readonly value="'+preco_venda+'"></td><td> '+subtotal[cont]+' </td> </tr>'
+            var linha = '<tr class="selected" id="linha'+cont+'">    <td> <button type="button" class="btn btn-danger" onclick="apagar('+cont+');"><i class="fa fa-trash" aria-hidden="true"></i></button></td>      <td> <input type="hidden" name="id_produto[]" value="'+id_produto+'">'+produto+'</td>             <td> <input type="text" name="quantidade[]" readonly value="'+quantidade+'"></td>                       <td> <input type="text" class="money"  name="preco_compra[]" readonly value="'+preco_compra+'"></td>                     <td> <input type="text" class="money"  name="preco_venda[]" readonly value="'+preco_venda+'"></td><td> '+subtotal[cont].toLocaleString("pt-BR", { style: "currency" , currency:"BRL"})+' </td> </tr>'
             cont++;
             limpar();
-            $("#total").html("R$: " + total);
+            $("#total").html(total.toLocaleString("pt-BR", { style: "currency" , currency:"BRL"}));
             ocultar();
             $('#detalhes').append(linha);
         }else{
-            alert("Erro ao inserir os detalhes, preencha os campos corretamente!!");
+            bootbox.alert("Erro ao inserir os detalhes, preencha os campos corretamente!!");
         }
     }
     function limpar(){
@@ -172,7 +174,7 @@
     }
     function apagar(index){
         total = total - subtotal[index];
-        $("#total").html("R$: " + total);
+        $("#total").html(total.toLocaleString("pt-BR", { style: "currency" , currency:"BRL"}));
         $("#linha" + index).remove();
         ocultar();
     }

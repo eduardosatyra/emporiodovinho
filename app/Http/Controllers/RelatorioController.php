@@ -42,7 +42,6 @@ class RelatorioController extends Controller {
                         ->join('cliente', 'cliente.id_cliente', '=', 'venda.id_cliente')
                         ->select('cliente.nome', 'venda.tipo_pagamento', 'venda.data_hora', 'venda.total_venda')
                         ->whereRaw("date(venda.data_hora) BETWEEN DATE('$data_inicial') AND DATE('$data_final')")
-                        ->orderBy('venda.id_venda', 'desc')                        
                         ->get();
         foreach ($data as $key => $value) {
              $value->total_venda = 'R$ '.number_format($value->total_venda, 2, ',', '.');
@@ -59,8 +58,9 @@ class RelatorioController extends Controller {
                         ->join('produto', 'produto.id_produto', '=', 'detalhe_venda.id_produto')
                         ->join('categoria', 'categoria.id_categoria', '=', 'produto.id_categoria')
                         ->join('venda', 'venda.id_venda', '=', 'detalhe_venda.id_venda')
-                        ->select( DB::raw('detalhe_venda.id_produto as cod, produto.nome as produto, categoria.nome as categoria, produto.preco_venda as preco_venda,sum( detalhe_venda.quantidade ) as quantidade') )
+                        ->select( DB::raw('produto.codigo as cod, produto.nome as produto, categoria.nome as categoria, produto.preco_venda as preco_venda,sum( detalhe_venda.quantidade ) as quantidade') )
                         ->whereRaw("date(venda.data_hora) BETWEEN DATE('$data_inicial') AND DATE('$data_final')")
+                        ->where("produto.status", "=", "Ativo")
                         ->when($produto, function ($query, $produto) {
                             return $query->where('detalhe_venda.id_produto', $produto);
                         })
