@@ -27,7 +27,7 @@
                 </option>
                 @endforeach
                 </select>
-                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-cliente">
+                <button type="button" style="width: 142px;" class="btn btn-success" data-toggle="modal" data-target="#modal-cliente">
                     <i class="glyphicon glyphicon-plus-sign"></i>
                 Adicionar Cliente
                 </button>

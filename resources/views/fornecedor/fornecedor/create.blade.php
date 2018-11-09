@@ -28,6 +28,7 @@
                     <select name="tipo_documento" class="form-control tipo_documento">
                         <option value="CPF"> CPF </option>
                         <option value="RG">RG </option>
+                        <option value="CNPJ">CNPJ </option>
                     </select>
                 </div>
             </div>
@@ -188,7 +189,7 @@
 </div>
 <div class="form-group">
     <button class="btn btn-primary" type="submit">Salvar</button>
-    <button class="btn btn-danger" type="reset">Cancelar</button>
+    <button class="btn btn-default"  onClick="history.go(-1)">Voltar</button>
 </div>
 {!!Form::close()!!}
 
@@ -197,10 +198,16 @@
 <script>
 $(".tipo_documento").change(function() {
     var doc = $('.tipo_documento').val();
-    if(doc == 'CPF'){
+    if(doc == "CPF"){
         $('.num_doc').mask('000.000.000-00', {reverse: true}); 
     }
-    $('.num_doc').mask('00.000.000-0', {reverse: true}); 
+    if(doc == "CNPJ"){
+       $('.num_doc').mask('00.000.000/0000-00', {reverse: true}); 
+    }
+    if(doc == "RG") {
+        $('.num_doc').mask('00.000.000-0', {reverse: true}); 
+    }
+    
 
     
 });

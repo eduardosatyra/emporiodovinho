@@ -72,4 +72,22 @@
 	<button class="btn btn-default"  onClick="history.go(-1)">Voltar</button>
 </div>
 {!!Form::close()!!}
+@push('scripts')
+<script src="{{asset('js/jquery.min.js')}}"></script>
+<script src="{{asset('js/jquery.mask.min.js')}}"></script>
+
+<script>
+
+$(".tipo_documento").change(function() {
+    var doc = $('.tipo_documento').val();
+    if(doc == 'CPF'){
+        $('.num_doc').mask('000.000.000-00', {reverse: true});       
+    }
+    if (doc =='RG'){
+    	$('.num_doc').mask('00.000.000-0', {reverse: true});    	
+    }
+    
+});
+</script>
+@endpush
 @stop

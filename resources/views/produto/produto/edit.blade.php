@@ -74,17 +74,6 @@
 					</select>
 				</div>
 			</div>
-			<div class="col-lg-6 col-sm-6 col-xs-12">      
-				<div class="form-group">
-					<label for="estoque">Estoque mínimo</label>
-					<input type="text" name="estoque_minimo" class="form-control" required value="{{ $produto ->estoque_minimo }}" placeholder="Estoque minimo">
-					@if ($errors->has('estoque_minimo'))
-						<span class="text-danger">
-							{{ $errors->first('estoque_minimo') }}
-						</span>
-					@endif
-				</div>
-			</div>
 		</div>
     </div>
 	<div class="panel panel-default" style="margin-left: 16px; width: 97%;">
