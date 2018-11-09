@@ -56,7 +56,7 @@
             <div class="col-lg-6 col-sm-6 col-xs-12">
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input type="text" name="email" class="form-control" value="{{old('email')}}" placeholder="Email...">
+                    <input type="email" name="email" class="form-control" value="{{old('email')}}" placeholder="Email...">
                     @if ($errors->has('email'))
                         <span class="text-danger">
                             {{ $errors->first('email') }}

@@ -5,7 +5,7 @@
         <h3>Nova Entrada</h3>
     </div>
 </div>
-{!!Form::open(array('url'=>'estoque/entrada','method'=>'POST','autocomplete'=>'off'))!!}
+{!!Form::open(array('url'=>'movimentacao/entrada','method'=>'POST','autocomplete'=>'off'))!!}
 {{Form::token()}}
 <div class="row">
     <div class="col-lg-6 col-sm-6 col-xs-6">
@@ -115,6 +115,7 @@
         </div>
     </div>
 </div>
+<input type="hidden" name="total_entrada" value="" id="total_entrada">
 <div class="col-lg-12 col-sm-12 col-md-12  col-xs-12" id="salvar">
     <div class="form-group">
         <input name="_token" value="{{ csrf_token() }}"
@@ -150,15 +151,25 @@
         if(id_produto!="" && quantidade!="" && quantidade>0 && preco_compra!="" && preco_venda!=""){
             subtotal[cont]=(quantidade*preco_compra);
             total = total + subtotal[cont];
+            preco_compra = mascaraValor(preco_compra);
+            preco_venda = mascaraValor(preco_venda);
             var linha = '<tr class="selected" id="linha'+cont+'">    <td> <button type="button" class="btn btn-danger" onclick="apagar('+cont+');"><i class="fa fa-trash" aria-hidden="true"></i></button></td>      <td> <input type="hidden" name="id_produto[]" value="'+id_produto+'">'+produto+'</td>             <td> <input type="text" name="quantidade[]" readonly value="'+quantidade+'"></td>                       <td> <input type="text" class="money"  name="preco_compra[]" readonly value="'+preco_compra+'"></td>                     <td> <input type="text" class="money"  name="preco_venda[]" readonly value="'+preco_venda+'"></td><td> '+subtotal[cont].toLocaleString("pt-BR", { style: "currency" , currency:"BRL"})+' </td> </tr>'
             cont++;
             limpar();
+            $("#total_entrada").val(total);
             $("#total").html(total.toLocaleString("pt-BR", { style: "currency" , currency:"BRL"}));
             ocultar();
             $('#detalhes').append(linha);
         }else{
             bootbox.alert("Erro ao inserir os detalhes, preencha os campos corretamente!!");
         }
+    }
+    function mascaraValor(valor) {
+        valor = valor.toString().replace(/\D/g,"");
+        valor = valor.toString().replace(/(\d)(\d{8})$/,"$1.$2");
+        valor = valor.toString().replace(/(\d)(\d{5})$/,"$1.$2");
+        valor = valor.toString().replace(/(\d)(\d{2})$/,"$1,$2");
+        return valor                    
     }
     function limpar(){
         $("#p_quantidade").val("");
@@ -174,6 +185,7 @@
     }
     function apagar(index){
         total = total - subtotal[index];
+        $("#total_entrada").val(total);
         $("#total").html(total.toLocaleString("pt-BR", { style: "currency" , currency:"BRL"}));
         $("#linha" + index).remove();
         ocultar();

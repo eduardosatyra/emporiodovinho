@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="shortcut icon" href="img/taca.ico" />
     <title>Emporio do Vinho</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
@@ -20,7 +21,7 @@
     <link rel="stylesheet" href="{{asset('css/_all-skins.min.css')}}">
     <link rel="stylesheet" href="{{asset('css/bootstrap-datepicker.css')}}">   
     <link rel="apple-touch-icon" href="{{asset('img/apple-touch-icon.png')}}">
-    <link rel="shortcut icon" href="{{asset('img/favicon.ico')}}">
+    <link rel="shortcut icon" href="{{asset('img/taca.ico')}}">
     <link rel="stylesheet" href="{{asset('css/jquery.dataTables.min.css')}}">
     <link rel="stylesheet" href="{{asset('css/buttons.dataTables.min.css')}}">
     <link rel="stylesheet" href="{{asset('css/dashboard.css')}}">
@@ -118,15 +119,15 @@
                     </li>
                     <li class="treeview">
                         <a href="#">
-                            <i class="fa fa-fw fa-cubes"></i>                            
-                            <span>Estoque</span>
+                            <i class="fa fa-external-link"></i>                            
+                            <span>Movimentações</span>
                             <i class="fa fa-angle-left pull-right"></i>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="/estoque/entrada"><i class="fa fa-circle-o"></i> Entradas</a></li>
+                            <li><a href="/movimentacao/entrada"><i class="fa fa-circle-o"></i> Entradas</a></li>
                         </ul>
                         <ul class="treeview-menu">
-                            <li><a href="/estoque/saida"><i class="fa fa-circle-o"></i> Saidas</a></li>
+                            <li><a href="/movimentacao/saida"><i class="fa fa-circle-o"></i> Saidas</a></li>
                         </ul>
                     </li>
                     <li class="treeview">

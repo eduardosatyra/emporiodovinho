@@ -14,7 +14,7 @@ class Cliente extends Model
 
 	'nome',
 	'tipo_documento',	
-	'num_documento', 	
+	'num_doc', 	
 	'telefone', 
 	'email', 	
 

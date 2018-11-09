@@ -29,7 +29,7 @@ $(document).ready(function() {
                 "url": "{{route('relatorio.produto.estoque-minimo')}}",
                 "dataSrc":""                       
             },
-            dom: 'Bfrtip',
+            dom: 'lBfrtip',
                     buttons: [
                     'excel', 'pdf', 'print'
                     ],
@@ -45,5 +45,10 @@ $(document).ready(function() {
 
     
 </script>
+<style>
+.dt-buttons{
+    margin-left:20%; 
+}
+</style>
 @endpush
 @stop

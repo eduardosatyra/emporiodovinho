@@ -12,7 +12,7 @@
             <div class="small-box bg-green">
                 <div class="inner">
                     <h4>Relatório de vendas</h4>
-                    <p>Relatório de vendas, filtro por data, cliente.</p>
+                    <p>Relatório de vendas, filtro por data.</p>
                 </div>
                 <div class="icon">
                     <i class="fa fa-users"></i>

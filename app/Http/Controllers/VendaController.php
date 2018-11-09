@@ -57,8 +57,17 @@ class VendaController extends Controller {
 
         $id_produto=$request->get('id_produto');
         $quantidade=$request->get('quantidade');
-        $desconto=$request->get('desconto');
-        $preco_venda=$request->get('preco_venda'); 
+        $descontos=$request->get('desconto');
+        $preco_vendas=$request->get('preco_venda');
+
+        $desconto = [];
+        $preco_venda = [];
+        foreach ($descontos as $desconto_format) {
+             $desconto[] = str_replace(',','.', str_replace('.','', $desconto_format));
+         }
+         foreach ($preco_vendas as $venda_format) {
+             $preco_venda[] = str_replace(',','.', str_replace('.','', $venda_format));
+         } 
 
         $cont = 0;
         while($cont < count($id_produto)) {

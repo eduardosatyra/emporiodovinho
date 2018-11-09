@@ -10,7 +10,7 @@ class Entrada extends Model {
 
 	public $timestamps = false;
 	protected $fillable = [
-	'id_fornecedor','tipo_pagamento','data_hora'
+	'id_fornecedor','tipo_pagamento','data_hora', 'total_entrada'
 	];
 
 	protected $guarded = [];

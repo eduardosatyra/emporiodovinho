@@ -15,7 +15,7 @@ class DashboardController extends Controller
     	$valorDoEstoque = 0;
     	foreach ($produtosCadastrados as $produto) {
     		$qtdProdutosEstoque += $produto->estoque;
-    		$valorDoEstoque += $produto->estoque * $produto->preco_venda;
+    		$valorDoEstoque += $produto->estoque * $produto->preco_compra;
     	}
     	$estoqueBaixo = DB::table('produto')
 	        ->whereRaw("estoque <= estoque_minimo")
@@ -44,9 +44,28 @@ class DashboardController extends Controller
                                 ->groupBy('dv.id_produto')
                                 ->orderBy('quantidade', 'desc')
                                 ->limit(5)
-                                ->get();         
+                                ->get();
+        $receitas = DB::table("venda")->select(DB::raw('sum(total_venda) as total_venda'))->get();
+        $despesas = DB::table("entrada")->select(DB::raw('sum(total_entrada) as total_entrada'))->get();
 
-        return view('dashboard', ["meses"=>$meses , "produtosMaisVendidos"=>$produtosMaisVendidos]);
+        $receitas_mensal = DB::table("venda")->select(DB::raw('CONCAT(LPAD(MONTH(data_hora), 2, "0"), "/", YEAR(data_hora)) mes, SUM(total_venda) total_venda'))
+            ->groupBy(DB::raw('YEAR(data_hora), MONTH(data_hora)'))->get();
+
+
+        $despesas_mensal = DB::table("entrada")->select(DB::raw('CONCAT(LPAD(MONTH(data_hora), 2, "0"), "/", YEAR(data_hora)) mes, SUM(total_entrada) total_venda'))
+            ->groupBy(DB::raw('YEAR(data_hora), MONTH(data_hora)'))->get();
+
+
+        $receitas_mensal = $this->getDados($receitas_mensal);
+        $despesas_mensal = $this->getDados($despesas_mensal);
+
+        $percentual = 0;
+        if( $despesas[0]->total_entrada != 0){
+            $percentual = (($receitas[0]->total_venda - $despesas[0]->total_entrada) / $despesas[0]->total_entrada) * 100;    
+        }
+        
+
+        return view('dashboard', ["meses"=>$meses , "produtosMaisVendidos"=>$produtosMaisVendidos, "receitas"=>$receitas, "despesas"=>$despesas, "percentual"=>$percentual, "receitas_mensal"=>$receitas_mensal, "despesas_mensal"=>$despesas_mensal]);
     }
 
     function getDados($dados){

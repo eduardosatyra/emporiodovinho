@@ -54,7 +54,6 @@ class ProdutoController extends Controller
     	$produto->id_categoria=$request->get('id_categoria');
     	$produto->codigo=$request->get('codigo');
     	$produto->nome=$request->get('nome');
-    	$produto->estoque=$request->get('estoque');
         $produto->estoque_minimo=$request->get('estoque_minimo');
 		$produto->preco_compra=$request->get('preco_compra');
 		$produto->preco_venda=$request->get('preco_venda');

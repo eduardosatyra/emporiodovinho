@@ -58,6 +58,7 @@
                     </div>
                 </div>
             </div>
+            <input type="hidden" name="venda" value="null">
             <div class="form-group" style="margin-left: 30px;">
                 <button class="btn btn-primary" type="submit">Salvar</button>
                 <button class="btn btn-default"  onClick="history.go(-1)">Voltar</button>

@@ -25,11 +25,11 @@ class EntradaController extends Controller {
             $entradas = DB::table('entrada as e')
             ->join('fornecedor as f', 'e.id_fornecedor', '=' , 'f.id_fornecedor')
             ->join('detalhe_entrada as de', 'e.id_entrada', '=' , 'de.id_entrada')
-            ->select('e.id_entrada', 'e.data_hora', 'f.nome', 'e.tipo_pagamento', DB::raw('sum(de.quantidade*preco_compra) as total'))
+            ->select('e.id_entrada', 'e.data_hora', 'f.nome', 'e.tipo_pagamento', 'e.total_entrada as total')
             ->where('e.id_entrada', 'LIKE', '%'.$query.'%')
             ->orderBy('e.id_entrada', 'desc')
             ->groupBy('e.id_entrada', 'e.data_hora', 'f.nome', 'e.tipo_pagamento')
-            ->paginate(7);          
+            ->paginate(10);          
 
             return view('estoque.entrada.index', [
                 "entradas"=>$entradas, "searchText"=>$query
@@ -49,15 +49,25 @@ class EntradaController extends Controller {
     public function store(EntradaFormRequest $request){
         $entrada = new Entrada;
         $entrada->id_fornecedor=$request->get('id_fornecedor');
-        $entrada->tipo_pagamento=$request->get('tipo_pagamento');            
+        $entrada->tipo_pagamento=$request->get('tipo_pagamento');
+        $entrada->total_entrada = number_format($request->get('total_entrada'), 2, '.', '');
         $mytime = Carbon::now('America/Sao_Paulo');
         $entrada->data_hora=$mytime->toDateTimeString();
         $entrada->save();
 
         $id_produto=$request->get('id_produto');
         $quantidade=$request->get('quantidade');
-        $preco_compra=$request->get('preco_compra');
-        $preco_venda=$request->get('preco_venda'); 
+        $preco_compras=$request->get('preco_compra');
+        $preco_vendas=$request->get('preco_venda');
+
+        $preco_compra = [];
+        $preco_venda = [];
+        foreach ($preco_compras as $compra) {
+             $preco_compra[] = str_replace(',','.', str_replace('.','', $compra));
+         }
+         foreach ($preco_vendas as $venda) {
+             $preco_venda[] = str_replace(',','.', str_replace('.','', $venda));
+         } 
 
         $cont = 0;
         while($cont < count($id_produto)) {
@@ -72,14 +82,14 @@ class EntradaController extends Controller {
 
         }
 
-    	return Redirect::to('estoque/entrada');
+    	return Redirect::to('movimentacao/entrada');
     }
 
     public function show($id){
         $entrada = DB::table('entrada as e')
             ->join('fornecedor as f', 'e.id_fornecedor', '=' , 'f.id_fornecedor')
             ->join('detalhe_entrada as de', 'e.id_entrada', '=' , 'de.id_entrada')
-            ->select('e.id_entrada', 'e.data_hora', 'f.nome', 'e.tipo_pagamento', DB::raw('sum(de.quantidade*preco_compra) as total'))
+            ->select('e.id_entrada', 'e.data_hora', 'f.nome', 'e.tipo_pagamento', 'e.total_entrada as total')
             ->where('e.id_entrada' , '=' , $id)
             ->groupBy('e.id_entrada', 'e.data_hora', 'f.nome', 'e.tipo_pagamento')
             ->first();            

@@ -65,7 +65,7 @@
 					@endif
 				</div>
 			</div>
-			<div class="col-lg-4 col-sm-4 col-xs-12">        
+			<div class="col-lg-6 col-sm-6 col-xs-12">        
 				<div class="form-group">
 					<label> Status</label>
 					<select name="status" class="form-control">											
@@ -74,22 +74,22 @@
 					</select>
 				</div>
 			</div>
+			<div class="col-lg-6 col-sm-6 col-xs-12">      
+				<div class="form-group">
+					<label for="estoque">Estoque mínimo</label>
+					<input type="text" name="estoque_minimo" class="form-control" required value="{{ $produto ->estoque_minimo }}" placeholder="Estoque minimo">
+					@if ($errors->has('estoque_minimo'))
+						<span class="text-danger">
+							{{ $errors->first('estoque_minimo') }}
+						</span>
+					@endif
+				</div>
+			</div>
 		</div>
     </div>
 	<div class="panel panel-default" style="margin-left: 16px; width: 97%;">
 		<div class="panel-heading">Estoque</div>
 		<div class="panel-body">
-			<div class="col-lg-6 col-sm-6 col-xs-12">      
-				<div class="form-group">
-					<label for="estoque">Estoque</label>
-					<input type="text" name="estoque" class="form-control" required value="{{ $produto -> estoque }}" placeholder="Estoque...">
-					@if ($errors->has('estoque'))
-						<span class="text-danger">
-							{{ $errors->first('estoque') }}
-						</span>
-					@endif
-				</div>
-			</div>
 			<div class="col-lg-6 col-sm-6 col-xs-12">      
 				<div class="form-group">
 					<label for="estoque">Estoque mínimo</label>

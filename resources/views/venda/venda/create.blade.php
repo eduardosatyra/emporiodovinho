@@ -20,7 +20,7 @@
             <label style="margin-left: 15px; margin-bottom:0""><h4 class="margin-top-0">SELECIONE O CLIENTE</h4></label>
             <div class="form-group">                   
                 <select name="id_cliente" id="id_cliente" class="col-md-8 selectpicker" data-live-search="true" >
-                <option value="0">Selecione um cliente..</option>
+                <option value="0">Venda avulsa</option>
                 @foreach($cliente as $cli)
                 <option value="{{$cli->id_cliente}}">
                 {{$cli->nome}}
@@ -36,8 +36,11 @@
                 <label for="">CÓDIGO: </label><input type="text" class="form-control" id="codigo" readonly="true">
                 <label for="">QUANTIDADE: </label><input type="text"  class="form-control" id="p_quantidade" onBlur="calculaTotal()">
                 <label for="">ESTOQUE ATUAL: </label><input type="text" class="form-control" id="estoque_atual" readonly="true">
-                <label for="">VALOR UNITÁRIO: </label><input type="text" class="form-control" id="p_preco_venda" readonly="true">
-                <label for="">DESCONTO: </label><input type="text" class="form-control" id="p_desconto" onBlur="calculaTotal()">
+                <label for="">VALOR UNITÁRIO: </label>
+                <input type="text" class="form-control money" id="p_preco_venda_format" readonly="true">
+                <input type="hidden" class="form-control money" id="p_preco_venda" readonly="true">
+                <label for="">DESCONTO: </label>
+                <input type="text" class="form-control" id="p_desconto" onBlur="calculaTotal()">
                 <label for="">VALOR TOTAL: </label><input type="text" class="form-control" id="valor_total" autocomplete="off" readonly="true">
                 <input type="hidden" value="0.00" name="total_atual" id="total_atual">
                 <div class="col-md-12 col-sm-12 col-lg-12">
@@ -159,10 +162,13 @@
 
         @push('scripts')
         <script src="{{asset('js/jquery.min.js')}}"></script>
+        <script src="{{asset('js/jquery.mask.min.js')}}"></script>
+        <script src="{{asset('js/mascaras.js')}}"></script>
         <script>
 
             cont = 0;
             subtotal=[];
+            $('#p_desconto').mask("#.##0,00", {reverse: true})
             function formataNum(moeda){
                 moeda = moeda.replace(".","");
                 moeda = moeda.replace(",",".");
@@ -186,7 +192,9 @@
                 var preco_venda = $('#p_preco_venda').val();
                 preco_venda = preco_venda;
                 var desconto = $('#p_desconto').val();
-                desconto = desconto;
+                if(desconto != ""){
+                    desconto = formataNum(desconto);    
+                }                
                 var valor_total = (quantidade * preco_venda) - desconto;        
                 valor_total = numeroParaMoeda(valor_total);        
                 $('#valor_total').val(valor_total);
@@ -199,8 +207,12 @@
 
                 quantidade=$("#p_quantidade").val();      
                 preco_venda = $('#p_preco_venda').val();
+                preco_venda_format = $("#p_preco_venda_format").val();
+                desconto_format = $('#p_desconto').val();
                 desconto = $('#p_desconto').val();
-
+                if(desconto != ""){
+                    desconto = formataNum(desconto);    
+                }
                 estoque=$("#estoque_atual").val();
                 estoque = parseInt(estoque);
                 quantidade = parseInt(quantidade);
@@ -216,7 +228,7 @@
                         atualizaTotal(total);
                         subtotal = numeroParaMoeda(subtotal);
 
-                        var linha = '<tr class="selected" id="linha'+cont+'"><td><input type="hidden" name="quantidade[]" value="'+quantidade+'"><input type="hidden" class="total" name="total[]" value="'+total+'">'+quantidade+'</td><td><input type="hidden" name="id_produto[]" value="'+id_produto+'">'+produto+'</td><td><input type="hidden" name="preco_venda[]" value="'+preco_venda+'">'+preco_venda+'</td><td><input type="hidden" name="desconto[]" value="'+desconto+'">'+desconto+'</td><td><input type="hidden" class="subtotal" name="subtotal[]" value="'+subtotal+'">'+subtotal +'</td><td class="text-center"><button onclick="deletarProduto('+cont+')" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove"></i></button></td></tr>'
+                        var linha = '<tr class="selected" id="linha'+cont+'"><td><input type="hidden" name="quantidade[]" value="'+quantidade+'"><input type="hidden" class="total" name="total[]" value="'+total+'">'+quantidade+'</td><td><input type="hidden" name="id_produto[]" value="'+id_produto+'">'+produto+'</td><td><input type="hidden" name="preco_venda[]" value="'+preco_venda_format+'">'+mascaraValor(preco_venda)+'</td><td><input type="hidden" name="desconto[]" value="'+desconto_format+'">'+desconto_format+'</td><td><input type="hidden" class="subtotal" name="subtotal[]" value="'+subtotal+'">'+subtotal +'</td><td class="text-center"><button onclick="deletarProduto('+cont+')" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove"></i></button></td></tr>'
                         cont++;
                         limpar();                 
                         $('#itens').append(linha);
@@ -242,6 +254,14 @@
                 
             }
 
+            function mascaraValor(valor) {
+                valor = valor.toString().replace(/\D/g,"");
+                valor = valor.toString().replace(/(\d)(\d{8})$/,"$1.$2");
+                valor = valor.toString().replace(/(\d)(\d{5})$/,"$1.$2");
+                valor = valor.toString().replace(/(\d)(\d{2})$/,"$1,$2");
+                return valor                    
+             }
+
             function atualizaTotal(total){
                 $('.total-pedido').html("R$ " + total);
                 $('#total_atual').val(total);
@@ -253,12 +273,14 @@
                 dadosProdutos = document.getElementById("p_id_produto").value.split('_');
                 $("#codigo").val(dadosProdutos[3]);
                 $("#p_preco_venda").val(dadosProdutos[2]);
+                $("#p_preco_venda_format").val(mascaraValor(dadosProdutos[2]));
                 $("#estoque_atual").val(dadosProdutos[1]);
             }
 
             function limpar(){
                 $("#p_quantidade").val("");
                 $("#p_preco_venda").val("");
+                $("#p_preco_venda_format").val("");
                 $("#p_desconto").val("");
                 $("#codigo").val("");
                 $("#estoque_atual").val("");

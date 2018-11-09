@@ -7,6 +7,7 @@ use emporiodovinho\Cliente;
 use Illuminate\Support\Facades\Redirect;
 use emporiodovinho\Http\Requests\ClienteFormRequest;
 use DB;
+use Validator;
 
 class ClienteController extends Controller
 {
@@ -43,16 +44,24 @@ class ClienteController extends Controller
     	return view("cliente.cliente.create");
     }
 
-    public function store(ClienteFormRequest $request){        
+    public function store(Request $request){        
     	$cliente = new Cliente;
-    	$cliente->nome=$request->get('nome');
-    	$cliente->tipo_documento=$request->get('tipo_documento');
-    	$cliente->num_doc=$request->get('num_doc');
-    	$cliente->telefone=$request->get('telefone');
-    	$cliente->email=$request->get('email');
-        $cliente->status= "Ativo";
-    	$cliente->save();
-    	return back();
+        $validator = Validator::make($request->all(), [
+            'nome'=>'required|max:100',
+            'tipo_documento'=>'max:20',
+            'num_doc'=> 'required|max:20'
+            ]);
+        if($validator->fails()) { 
+            return Redirect::back()->withErrors($validator)->withInput(); 
+        } 
+
+        $cliente->fill($request->all());
+        $cliente->save();
+        if($request->get('venda')){
+            return redirect()->back();
+        }
+        return Redirect::to('cliente/cliente');
+    	
     }
 
     public function show($id){

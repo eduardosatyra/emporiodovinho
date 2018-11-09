@@ -31,16 +31,16 @@
 						<th></th>
 						<th></th>
 						<th></th>
-						<th id="total">{{$entrada->total}}</th>     
+						<th id="total">R$ <?php echo number_format($entrada->total, 2,",", ".");?></th>     
 					</tfoot>
 					<tbody>
 						@foreach($detalhes as $det)
 						<tr>
 							<td>{{$det->produto}}</td>
 							<td>{{$det->quantidade}}</td>
-							<td>{{$det->preco_compra}}</td>
-							<td>{{$det->preco_venda}}</td>
-							<td><?php echo number_format($det->quantidade*$det->preco_compra,2,",",".");?></td>
+							<td>R$ <?php echo number_format($det->preco_compra,2,",",".");?></td>
+							<td>R$ <?php echo number_format($det->preco_venda,2,",",".");?></td>
+							<td>R$ <?php echo number_format($det->quantidade*$det->preco_compra,2,",",".");?></td>
 						</tr>
 						@endforeach
 					</tbody>

@@ -69,7 +69,7 @@ class SaidaController extends Controller {
 
         }
 
-    	return Redirect::to('estoque/saida');
+    	return Redirect::to('movimentacao/saida');
     }
 
     public function show($id){

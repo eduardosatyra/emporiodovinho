@@ -45,7 +45,7 @@ $(document).ready(function() {
 
     function fetch_data(data_inicial, data_final, token, produto){
 
-        $('#listar-produtos').DataTable({
+        $('#listar-produtos').DataTable({            
             "processing": true,
             "serverSide": false,
             "order": [[ 3, "desc" ]],
@@ -65,7 +65,7 @@ $(document).ready(function() {
                 }                       
             },
             "order": [[ 3, "desc" ]],
-            dom: 'Bfrtip',
+            dom: 'lBfrtip',
                     buttons: [
                     'excel', 'pdf', 'print'
                     ],
@@ -95,5 +95,10 @@ $(document).ready(function() {
 });
     
 </script>
+<style>
+.dt-buttons{
+    margin-left:20%; 
+}
+</style>
 @endpush
 @stop

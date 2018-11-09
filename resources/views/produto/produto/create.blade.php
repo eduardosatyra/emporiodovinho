@@ -74,17 +74,6 @@
 		<div class="panel-body">
 			<div class="col-lg-6 col-sm-6 col-xs-12">      
 				<div class="form-group">
-				<label for="estoque">Estoque Atual</label>
-					<input type="text" name="estoque" class="form-control" required value="{{ old ('estoque') }}" placeholder="Estoque...">
-					@if ($errors->has('estoque'))
-						<span class="text-danger">
-							{{ $errors->first('estoque') }}
-						</span>
-					@endif
-				</div>
-			</div>
-			<div class="col-lg-6 col-sm-6 col-xs-12">      
-				<div class="form-group">
 				<label for="estoque">Estoque mínimo</label>
 					<input type="text" name="estoque_minimo" class="form-control" required value="{{ old ('estoque_minimo') }}" placeholder="Estoque minimo">
 						@if ($errors->has('estoque_minimo'))
