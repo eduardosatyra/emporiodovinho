@@ -39,7 +39,7 @@
 			<div class="col-lg-6 col-sm-6 col-xs-12">
 				<div class="form-group">
 					<label for="codigo">Código</label>
-					<input type="text" name="codigo" class="form-control" required value="{{ old ('codigo') }}" placeholder="Código...">
+					<input type="text" name="codigo"  maxlength="5" class="form-control" required value="{{ old ('codigo') }}" placeholder="Digite apenas números..">
 					@if ($errors->has('codigo'))
 						<span class="text-danger">
 							{{ $errors->first('codigo') }}
@@ -91,7 +91,7 @@
 			<div class="col-lg-6 col-sm-6 col-xs-12">        
 				<div class="form-group">
 					<label for="descricao">Preco de Compra</label>
-					<input type="text"  name="preco_compra" class="form-control money">
+					<input type="text"  name="preco_compra" placeholder="0,00" class="form-control money" value="{{ old ('preco_compra') }}">
 					@if ($errors->has('preco_compra'))
 						<span class="text-danger">
 							{{ $errors->first('preco_compra') }}
@@ -102,7 +102,7 @@
 			<div class="col-lg-6 col-sm-6 col-xs-12">        
 				<div class="form-group">
 					<label for="descricao">Preço de Venda</label>
-					<input type="text"  name="preco_venda" class="form-control money">
+					<input type="text"  name="preco_venda" placeholder="0,00" class="form-control money" value="{{ old ('preco_venda') }}">
 					@if ($errors->has('preco_venda'))
 						<span class="text-danger">
 							{{ $errors->first('preco_venda') }}

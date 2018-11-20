@@ -58,7 +58,7 @@ class RelatorioController extends Controller {
                         ->join('produto', 'produto.id_produto', '=', 'detalhe_venda.id_produto')
                         ->join('categoria', 'categoria.id_categoria', '=', 'produto.id_categoria')
                         ->join('venda', 'venda.id_venda', '=', 'detalhe_venda.id_venda')
-                        ->select( DB::raw('produto.codigo as cod, produto.nome as produto, categoria.nome as categoria, produto.preco_venda as preco_venda,sum( detalhe_venda.quantidade ) as quantidade') )
+                        ->select( DB::raw('produto.codigo as cod, produto.nome as produto, categoria.nome as categoria, sum(detalhe_venda.faturamento) as faturamento ,sum( detalhe_venda.quantidade ) as quantidade, sum(detalhe_venda.faturamento)  / sum(detalhe_venda.quantidade)  as ticket ') )
                         ->whereRaw("date(venda.data_hora) BETWEEN DATE('$data_inicial') AND DATE('$data_final')")
                         ->where("produto.status", "=", "Ativo")
                         ->when($produto, function ($query, $produto) {
@@ -68,7 +68,8 @@ class RelatorioController extends Controller {
                         ->orderBy('quantidade', 'desc')                        
                         ->get();
         foreach ($data as $key => $value) {
-            $value->preco_venda = 'R$ '.number_format($value->preco_venda, 2, ',', '.');            
+            $value->ticket = 'R$ '.number_format($value->ticket, 2, ',', '.');
+            $value->faturamento = 'R$ '.number_format($value->faturamento, 2, ',', '.');            
         } 
 
         return response()->json($data);   
@@ -80,10 +81,11 @@ class RelatorioController extends Controller {
 
     public function estoqueMinimo(){
         $data=DB::table('produto')
-        ->select('*')
+        ->select('produto.*', 'categoria.nome as categoria')
+        ->join('categoria', 'categoria.id_categoria', '=', 'produto.id_categoria')
         ->whereRaw("estoque <= estoque_minimo")
         ->where('status', '=', 'Ativo')
-        ->get();
+        ->get();        
 
         foreach ($data as $key => $value) {
             $value->preco_venda = 'R$ '.number_format($value->preco_venda, 2, ',', '.');            

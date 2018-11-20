@@ -5,8 +5,9 @@ namespace emporiodovinho\Http\Controllers;
 use Illuminate\Http\Request;
 use emporiodovinho\Categoria;
 use Illuminate\Support\Facades\Redirect;
-use emporiodovinho\Http\Requests\CategoriaFormRequest;
 use DB;
+use Validator;
+use Illuminate\Validation\Rule;
 
 
 class CategoriaController extends Controller
@@ -34,12 +35,33 @@ class CategoriaController extends Controller
     	return view("produto.categoria.create");
     }
 
-    public function store(CategoriaFormRequest $request){
+    public function store(Request $request){
+        $categorias = DB::table('categoria')
+                    ->where('nome', 'LIKE', '%'.$request->nome.'%')
+                    ->where('condicao', '=', '0')
+                    ->first();
+        if (!empty($categorias)) {            
+            $categoria=Categoria::findOrFail($categorias->id_categoria);
+            $categoria->condicao = 1;
+            $categoria->update();
+            flash('Categoria cadastrada com sucesso.')->success();
+            return Redirect::to('produto/categoria');
+        } else {
+            $validator = Validator::make($request->all(), [
+                'nome'=>'required|max:256|unique:categoria',
+            ]);
+        }
+                
+        if ($validator->fails()) {
+            return Redirect::back()
+                        ->withErrors($validator)
+                        ->withInput();
+        }
     	$categoria = new Categoria;
     	$categoria->nome=$request->get('nome');
-    	$categoria->descricao=$request->get('descricao');
     	$categoria->condicao='1';
     	$categoria->save();
+        flash('Categoria cadastrada com sucesso.')->success();
     	return Redirect::to('produto/categoria');
     }
 
@@ -53,12 +75,23 @@ class CategoriaController extends Controller
     		["categoria"=>Categoria::findOrFail($id) ]);
     }
 
-    public function update(CategoriaFormRequest $request, $id){
+    public function update(Request $request, $id){
+        $validator = Validator::make($request->all(), [
+            'nome' => [
+                'max:256',
+                'required',
+                Rule::unique('categoria')->ignore($id, 'id_categoria'),
+            ],         
+        ]);
+        if ($validator->fails()) {
+            return Redirect::back()
+                        ->withErrors($validator)
+                        ->withInput();
+        }
     	$categoria=Categoria::findOrFail($id);
     	$categoria->nome=$request->get('nome');
-    	$categoria->descricao=$request->get('descricao');
-    	//$categoria->condicao=$request->get('condicao');
     	$categoria->update();
+        flash('Categoria atualizada com sucesso.')->success();
     	return Redirect::to('produto/categoria');
     }
 
@@ -66,6 +99,7 @@ class CategoriaController extends Controller
     	$categoria=Categoria::findOrFail($id);
     	$categoria->condicao='0';
     	$categoria->update();
+        flash('Categoria removida com sucesso.')->success();
     	return Redirect::to('produto/categoria');
     }
 }

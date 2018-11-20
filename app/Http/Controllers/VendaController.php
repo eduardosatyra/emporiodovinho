@@ -61,9 +61,14 @@ class VendaController extends Controller {
         $preco_vendas=$request->get('preco_venda');
 
         $desconto = [];
-        $preco_venda = [];
+        $preco_venda = [];        
         foreach ($descontos as $desconto_format) {
-             $desconto[] = str_replace(',','.', str_replace('.','', $desconto_format));
+            if($desconto_format == ''){
+                $desconto[] = 0.00;   
+            }else{
+                $desconto[] = str_replace(',','.', str_replace('.','', $desconto_format));   
+            }           
+             
          }
          foreach ($preco_vendas as $venda_format) {
              $preco_venda[] = str_replace(',','.', str_replace('.','', $venda_format));
@@ -77,11 +82,12 @@ class VendaController extends Controller {
             $detalhe->quantidade=$quantidade[$cont];
             $detalhe->desconto=$desconto[$cont];
             $detalhe->preco_venda=$preco_venda[$cont];
+            $detalhe->faturamento = $preco_venda[$cont] * $quantidade[$cont] - $desconto[$cont];
             $detalhe->save();
             $cont=$cont+1;
 
         }
-            
+        flash('Venda cadastrada com sucesso.')->success();    
     	return Redirect::to('venda/venda');
     }
 

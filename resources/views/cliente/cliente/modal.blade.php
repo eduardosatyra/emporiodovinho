@@ -11,7 +11,7 @@ role="dialog" tabindex="-1" id="modal-delete-{{$cli->id_cliente}}">
 		<h4 class="modal-title">Apagar Cliente</h4>
 	</div>
 	<div class="modal-body">
-		<p>Confirme se deseja apagar a cliente</p>
+		<p>Confirme se deseja apagar o cliente</p>
 	</div>
 	<div class="modal-footer">
 		<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>

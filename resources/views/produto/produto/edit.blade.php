@@ -1,8 +1,8 @@
 @extends('layouts.admin')
 @section('conteudo')
 <div class="row">
-	<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-		<h3>Editar Produto: {{ $produto->nome }}</h3>
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+		<h3><strong>Editar Produto:</strong> {{ $produto->nome }}</h3>
 	</div>
 </div>
 
@@ -46,7 +46,7 @@
 			<div class="col-lg-6 col-sm-6 col-xs-12">
 				<div class="form-group">
 					<label for="codigo">Código</label>
-					<input type="text" name="codigo" class="form-control" required value="{{ $produto->codigo }}" placeholder="Código...">
+					<input type="text" name="codigo" maxlength="5" class="form-control" required value="{{ $produto->codigo }}" placeholder="Digite apenas números..">
 					@if ($errors->has('codigo'))
 						<span class="text-danger">
 							{{ $errors->first('codigo') }}
@@ -98,7 +98,7 @@
 			<div class="col-lg-6 col-sm-6 col-xs-12">        
 				<div class="form-group">
 					<label for="preco_compra">Preco de Compra</label>
-					<input type="text" value="{{ $produto->preco_compra }}" name="preco_compra" class="form-control">
+					<input type="text" value="{{ $produto->preco_compra }}" name="preco_compra" class="form-control money">
 					@if ($errors->has('preco_compra'))
 						<span class="text-danger">
 							{{ $errors->first('preco_compra') }}
@@ -109,7 +109,7 @@
 			<div class="col-lg-6 col-sm-6 col-xs-12">        
 				<div class="form-group">
 					<label for="preco_venda">Preço de Venda</label>
-					<input type="text" value="{{ $produto->preco_venda }}" name="preco_venda" class="form-control">
+					<input type="text" value="{{ $produto->preco_venda }}" name="preco_venda" class="form-control money">
 					@if ($errors->has('preco_venda'))
 						<span class="text-danger">
 							{{ $errors->first('preco_venda') }}

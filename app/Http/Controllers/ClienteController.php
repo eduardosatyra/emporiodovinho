@@ -5,9 +5,9 @@ namespace emporiodovinho\Http\Controllers;
 use Illuminate\Http\Request;
 use emporiodovinho\Cliente;
 use Illuminate\Support\Facades\Redirect;
-use emporiodovinho\Http\Requests\ClienteFormRequest;
 use DB;
 use Validator;
+use Illuminate\Validation\Rule;
 
 class ClienteController extends Controller
 {
@@ -44,22 +44,27 @@ class ClienteController extends Controller
     	return view("cliente.cliente.create");
     }
 
-    public function store(Request $request){        
-    	$cliente = new Cliente;
+    public function store(Request $request){
         $validator = Validator::make($request->all(), [
             'nome'=>'required|max:100',
-            'tipo_documento'=>'max:20',
-            'num_doc'=> 'required|max:20'
-            ]);
-        if($validator->fails()) { 
-            return Redirect::back()->withErrors($validator)->withInput(); 
-        } 
+            'tipo_documento'=>'required|max:20',
+            'num_doc'=> 'required|max:20|unique:cliente',
+            'telefone'=> 'max:20',
+            'email' => 'max:100'
+        ]);        
+        if ($validator->fails()) {
+            return Redirect::back()
+                        ->withErrors($validator)
+                        ->withInput();
+        }
 
+    	$cliente = new Cliente;
         $cliente->fill($request->all());
         $cliente->save();
         if($request->get('venda')){
             return redirect()->back();
         }
+        flash('Cliente cadastrado com sucesso.')->success();
         return Redirect::to('cliente/cliente');
     	
     }
@@ -74,7 +79,23 @@ class ClienteController extends Controller
     		["cliente"=>Cliente::findOrFail($id) ]);
     }
 
-    public function update(ClienteFormRequest $request, $id){
+    public function update(Request $request, $id){
+        $validator = Validator::make($request->all(), [
+            'nome'=>'required|max:100',            
+            'tipo_documento'=>'required|max:20',
+            'email'=>'max:100',
+            'telefone'=>'max:20'   ,     
+            'num_doc' => [
+                'required','max:20',
+                Rule::unique('cliente')->ignore($id, 'id_cliente'),
+            ],         
+        ]);
+        if ($validator->fails()) {
+            return Redirect::back()
+                        ->withErrors($validator)
+                        ->withInput();
+        }
+
     	$cliente=Cliente::findOrFail($id);
     	$cliente->nome=$request->get('nome');
     	$cliente->tipo_documento=$request->get('tipo_documento');
@@ -82,6 +103,7 @@ class ClienteController extends Controller
     	$cliente->telefone=$request->get('telefone');
     	$cliente->email=$request->get('email');
     	$cliente->update();
+        flash('Cliente atualizado com sucesso.')->success();
     	return Redirect::to('cliente/cliente');
     }
 
@@ -89,6 +111,7 @@ class ClienteController extends Controller
     	$cliente=Cliente::findOrFail($id);
     	$cliente->status='Inativo';
     	$cliente->update();
+        flash('Cliente removido com sucesso.')->success();
     	return Redirect::to('cliente/cliente');
     }
     }

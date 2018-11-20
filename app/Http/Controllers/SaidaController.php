@@ -42,6 +42,7 @@ class SaidaController extends Controller {
         $produtos=DB::table('produto as pro')
         ->select('pro.id_produto', 'pro.nome', 'pro.estoque')
         ->where('pro.status', '=', 'Ativo')
+         ->where('pro.estoque', '>', 0)
         ->get();
         return view('estoque.saida.create', ["produtos"=>$produtos]);
     }

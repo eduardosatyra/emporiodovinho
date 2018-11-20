@@ -2,7 +2,7 @@
 @section('conteudo')
 <div class="row">
 	<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-		<h3>Editar Cliente: {{ $cliente->nome }}</h3>
+		<h3><strong>Editar Cliente:</strong> {{ $cliente->nome }}</h3>
 	</div>
 </div>
 {!!Form::model($cliente, ['method'=>'PATCH', 'route'=>['cliente.update', $cliente->id_cliente]])!!}
@@ -25,7 +25,7 @@
 			<div class="col-lg-6 col-sm-6 col-xs-12">
 				<div class="form-group">
 					<label>Tipo Documento</label>
-					<select name="tipo_documento" class="form-control">						
+					<select name="tipo_documento" class="form-control" id="tipo_documento">						
 						<option value="CPF" @if($cliente->tipo_documento == "CPF") selected  @endif> CPF </option>
 						<option value="RG" @if($cliente->tipo_documento == "RG") selected  @endif> RG </option>
 					</select>
@@ -35,7 +35,7 @@
 				<div class="form-group">
 					<label for="num_doc">Número Documento</label>
 					<input type="text" name="num_doc" required
-					value="{{$cliente->num_doc}}" class="form-control" placeholder="Número do Documento...">
+					value="{{$cliente->num_doc}}" class="form-control" id="documento" placeholder="Número do Documento...">
 					@if ($errors->has('num_doc'))
                         <span class="text-danger">
                             {{ $errors->first('num_doc') }}
@@ -45,9 +45,9 @@
 			</div>
 			<div class="col-lg-6 col-sm-6 col-xs-12">
 				<div class="form-group">
-					<label for="telefone">Telefone</label>
-					<input type="text" name="telefone" class="form-control" value="{{$cliente->telefone}}"
-					placeholder="Telefone...">
+					<label for="telefone">Celular</label>
+					<input type="text" name="telefone" class="form-control phone" value="{{$cliente->telefone}}"
+					placeholder="(99)99999-9999">
 					@if ($errors->has('telefone'))
                         <span class="text-danger">
                             {{ $errors->first('telefone') }}
@@ -77,17 +77,30 @@
 <script src="{{asset('js/jquery.mask.min.js')}}"></script>
 
 <script>
-
-$(".tipo_documento").change(function() {
-    var doc = $('.tipo_documento').val();
-    if(doc == 'CPF'){
-        $('.num_doc').mask('000.000.000-00', {reverse: true});       
-    }
-    if (doc =='RG'){
-    	$('.num_doc').mask('00.000.000-0', {reverse: true});    	
-    }
-    
+$(document).ready(function() {
+  limitaCampo();
 });
+
+
+$("#tipo_documento").change(function() {
+	$('#documento').val("");
+    var doc = $('#tipo_documento').val();
+    if(doc == "CPF"){
+        $('#documento').mask('000.000.000-00', {reverse: true}); 
+    }
+    if(doc == "RG") {
+        $('#documento').mask('00.000.000-0', {reverse: true}); 
+    }
+});
+function limitaCampo(){
+	var documento = $('#tipo_documento').val();
+	if(documento == 'CPF'){
+		$('#documento').attr('maxlength', 14);
+	}if(documento == 'RG'){
+		$('#documento').attr('maxlength', 12);
+	}
+    
+}
 </script>
 @endpush
 @stop

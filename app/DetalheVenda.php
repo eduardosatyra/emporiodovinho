@@ -10,7 +10,7 @@ class DetalheVenda extends Model{
 
     public $timestamps = false;
     protected $fillable = [
-    'id_venda','id_produto', 'quantidade', 'preco_venda', 'desconto'
+    'id_venda','id_produto', 'quantidade', 'preco_venda', 'desconto', 'faturamento'
     ];
 
     protected $guarded = [];

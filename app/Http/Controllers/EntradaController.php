@@ -81,7 +81,7 @@ class EntradaController extends Controller {
             $cont=$cont+1;
 
         }
-
+        flash('Entrada cadastrada com sucesso.')->success();
     	return Redirect::to('movimentacao/entrada');
     }
 

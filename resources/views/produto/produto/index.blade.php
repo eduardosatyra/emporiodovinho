@@ -1,10 +1,13 @@
 @extends('layouts.admin')
 @section('conteudo')
-<div class="row">
+<div class="row">	
 	<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 		<h3>Lista de Produtos</h3>
 		<a  href="produto/create" class="btn btn-success" style="margin-bottom: 10px;"><i class="glyphicon glyphicon-plus-sign"></i> Adicionar produto</a>
 		@include('produto.produto.search')
+	</div>
+	<div class="col-md-4 pull-right msg" style="display: none;">
+		@include('flash::message')
 	</div>
 </div>
 <div class="row">
@@ -40,4 +43,17 @@
 		{{$produtos->render()}}
 	</div>
 </div>
+@push('scripts')
+<script src="{{asset('js/jquery.min.js')}}"></script>
+<script>
+$(document).ready(function() {
+	setTimeout(carregar, 1);
+});
+function carregar() {
+	$('.msg').show();
+	$('.alert-success').attr('style', 'background-color: #00a65a !important;');
+	$('.alert-success').not('.alert-important').delay(3000).fadeOut(350);
+}
+</script>
+@endpush
 @stop

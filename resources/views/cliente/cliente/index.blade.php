@@ -6,6 +6,9 @@
 		<a  href="cliente/create" class="btn btn-success" style="margin-bottom: 10px;"><i class="glyphicon glyphicon-plus-sign"></i> Adicionar cliente</a>
 		@include('cliente.cliente.search')
 	</div>
+	<div class="col-md-4 pull-right msg" style="display: none;">
+		@include('flash::message')
+	</div>
 </div>
 
 <div class="row">
@@ -37,4 +40,17 @@
 		{{$clientes->render()}}
 	</div>
 </div>
+@push('scripts')
+<script src="{{asset('js/jquery.min.js')}}"></script>
+<script>
+$(document).ready(function() {
+	setTimeout(carregar, 1);
+});
+function carregar() {
+	$('.msg').show();
+	$('.alert-success').attr('style', 'background-color: #00a65a !important;');
+	$('.alert-success').not('.alert-important').delay(3000).fadeOut(350);
+}
+</script>
+@endpush
 @stop

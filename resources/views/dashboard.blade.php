@@ -21,28 +21,36 @@
 <div class="row">
     <div class="content" style="display: flex; justify-content: space-between;">
         <div class="small-box bg-green" style="width: 24%;  height: 20%; padding: 1%;">
-            <h4>Receitas</h4>        
+            <h4>Vendas Geral</h4>        
             <p style="font-size: 30px;">R$ <?php echo number_format($receitas[0]->total_venda, 2, ',', '.')?></p>
             <div class="icon">
                 <i class="fa fa-usd" aria-hidden="true"></i>
             </div>
         </div>
         <div class="small-box bg-red" style="width: 24%; height: 20%; padding: 1%;">
-            <h4>Despesas</h4>
+            <h4>Despesas de Produtos</h4>
             <p style="font-size: 30px;">R$ <?php echo number_format($despesas[0]->total_entrada, 2, ',', '.')?></p>
             <div class="icon">
                 <i class="fa fa-money" aria-hidden="true"></i>
             </div>        
         </div>
-        <div class="small-box bg-orange" style="width: 24%; height: 20%; padding: 1%;">
-            <h4>Lucro / Prejuízo</h4>
+        <?php
+            $color = 'bg-green';
+            $info = 'Lucro';
+            if ($receitas[0]->total_venda - $despesas[0]->total_entrada < 0) {
+                $color = 'bg-red';
+                $info = 'Prejuízo';
+            }
+        ?>
+        <div class="small-box <?php echo $color ?> " style="width: 24%; height: 20%; padding: 1%;">
+            <h4><?php echo $info ?></h4>
             <p style="font-size: 30px;">R$ <?php echo number_format($receitas[0]->total_venda - $despesas[0]->total_entrada, 2, ',', '.')?></p>        
             <div class="icon">
                 <i class="fa fa-line-chart" aria-hidden="true"></i>
             </div>        
         </div>
         <div class="small-box bg-purple" style="width: 24%; height: 20%; padding: 1%;">
-            <h4>Lucro / Prejuízo</h4>
+            <h4><?php echo $info ?> %</h4>
             <p style="font-size: 30px;"><?php echo number_format($percentual, 2,',', '.') ?>%</p>
             <div class="icon">
                 <i class="fa fa-percent" aria-hidden="true"></i>
@@ -171,12 +179,12 @@ var receitas = <?php echo $receitas[0]->total_venda ?>;
   },        
           title: {
             display: true,
-            text: 'Receitas x Despesas (Geral)'
+            text: 'Vendas Geral x Despesas de Produtos (Geral)'
           }
     };
 
     var data = {
-        labels: ["Despesas", "Receitas"],
+        labels: ["Despesas de Produtos", "Vendas Geral"],
         datasets: [
             {
                 backgroundColor: [ "#FF0000","#3CB371"],
@@ -224,7 +232,7 @@ var myPieChart = new Chart(ctx,{
   },        
           title: {
             display: true,
-            text: 'Receitas x Despesas (Mensais)'
+            text: 'Vendas x Despesas (Mensais)'
           }
     };
 

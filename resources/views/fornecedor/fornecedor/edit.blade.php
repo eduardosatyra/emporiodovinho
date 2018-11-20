@@ -1,8 +1,8 @@
 @extends('layouts.admin')
 @section('conteudo')
 <div class="row">
-	<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-		<h3>Editar Fornecedor: {{ $fornecedor->nome }}</h3>
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+		<h3><strong>Editar Fornecedor:</strong> {{ $fornecedor->nome }}</h3>
 	</div>
 </div>
 {!!Form::model($fornecedor, ['method'=>'PATCH', 'route'=>['fornecedor.update', $fornecedor->id_fornecedor]])!!}
@@ -25,16 +25,16 @@
 			<div class="col-lg-6 col-sm-6 col-xs-12">
 				<div class="form-group">
 					<label>Tipo Documento</label>
-					<select name="tipo_documento" class="form-control">						
+					<select name="tipo_documento" class="form-control" id="tipo_documento">						
 						<option value="CPF" @if($fornecedor->tipo_documento == "CPF") selected  @endif> CPF </option>
-						<option value="RG" @if($fornecedor->tipo_documento == "RG") selected  @endif> RG </option>
+						<option value="CNPJ" @if($fornecedor->tipo_documento == "CNPJ") selected  @endif> CNPJ </option>
 					</select>
 				</div>
 			</div>
 			<div class="col-lg-6 col-sm-6 col-xs-12">
 				<div class="form-group">
 					<label for="num_doc">Número Documento</label>
-					<input type="text" name="num_doc" required
+					<input type="text" name="num_doc" required id="documento" 
 					value="{{$fornecedor->num_doc}}" class="form-control" placeholder="Número do Documento...">
 					@if ($errors->has('num_doc'))
                         <span class="text-danger">
@@ -192,4 +192,35 @@
 	<button class="btn btn-default"  onClick="history.go(-1)">Voltar</button>
 </div>
 {!!Form::close()!!}
+
+@push('scripts')
+<script src="{{asset('js/jquery.min.js')}}"></script>
+<script>
+
+$(document).ready(function() {
+  limitaCampo();
+});
+
+
+$("#tipo_documento").change(function() {
+	$('#documento').val("");
+    var doc = $('#tipo_documento').val();
+    if(doc == "CPF"){
+        $('#documento').mask('000.000.000-00', {reverse: true}); 
+    }
+    if(doc == "CNPJ"){
+       $('#documento').mask('00.000.000/0000-00', {reverse: true}); 
+    }
+});
+function limitaCampo(){
+	var documento = $('#tipo_documento').val();
+	if(documento == 'CPF'){
+		$('#documento').attr('maxlength', 14);
+	if(documento == 'CNPJ'){
+		$('#documento').attr('maxlength', 18);
+	}
+    
+}
+</script>
+@endpush
 @stop

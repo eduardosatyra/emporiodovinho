@@ -45,7 +45,7 @@
             <div class="col-lg-6 col-sm-6 col-xs-12">
                 <div class="form-group">
                     <label for="telefone">Celular</label>
-                    <input type="text" name="telefone" class="form-control  phone" placeholder="Telefone...">
+                    <input type="text" name="telefone" class="form-control  phone" placeholder="(99)99999-9999">
                     @if ($errors->has('telefone'))
                         <span class="text-danger">
                             {{ $errors->first('telefone') }}
@@ -76,6 +76,7 @@
 <script>
 $(".tipo_documento").change(function() {
     var doc = $('.tipo_documento').val();
+    $('.num_doc').val("");
     if(doc == 'CPF'){
         $('.num_doc').mask('000.000.000-00', {reverse: true});
     }

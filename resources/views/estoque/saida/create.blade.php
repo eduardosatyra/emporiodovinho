@@ -106,7 +106,7 @@
 
         if(id_produto!="" && quantidade!="" && quantidade>0 && motivo!=""){
             if(estoque >= quantidade){
-                var linha = '<tr class="selected" id="linha'+cont+'">    <td> <button type="button" class="btn btn-warning" onclick="apagar('+cont+');"> X </button></td>      <td> <input type="hidden" name="id_produto[]" value="'+id_produto+'">'+produto+'</td>             <td> <input type="text" readonly name="quantidade[]" value="'+quantidade+'"></td>                       <td> <input type="text" name="motivo[]" value="'+motivo+'"></td></tr>'
+                var linha = '<tr class="selected" id="linha'+cont+'">    <td> <button type="button" class="btn btn-warning" onclick="apagar('+cont+');"><i class="fa fa-trash" aria-hidden="true"></i></button></td>      <td> <input type="hidden" name="id_produto[]" value="'+id_produto+'">'+produto+'</td>             <td> <input type="text" readonly name="quantidade[]" value="'+quantidade+'"></td>                       <td> <input type="text" name="motivo[]" value="'+motivo+'"></td></tr>'
                 cont++;
                 total++;
                 ocultar();

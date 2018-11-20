@@ -25,9 +25,8 @@
             <div class="col-lg-6 col-sm-6 col-xs-12">
                 <div class="form-group">
                     <label>Tipo Documento</label>
-                    <select name="tipo_documento" class="form-control tipo_documento">
+                    <select name="tipo_documento" class="form-control" id="tipo_documento">
                         <option value="CPF"> CPF </option>
-                        <option value="RG">RG </option>
                         <option value="CNPJ">CNPJ </option>
                     </select>
                 </div>
@@ -35,7 +34,7 @@
             <div class="col-lg-6 col-sm-6 col-xs-12">
                 <div class="form-group">
                     <label for="num_doc">Número Documento</label>
-                    <input type="text" name="num_doc" required value="{{old('num_doc')}}" class="form-control num_doc" placeholder="Número do Documento...">
+                    <input type="text" name="num_doc" required value="{{old('num_doc')}}" class="form-control" id="documento" placeholder="Número do Documento...">
                     @if ($errors->has('num_doc'))
                         <span class="text-danger">
                             {{ $errors->first('num_doc') }}
@@ -46,7 +45,7 @@
             <div class="col-lg-6 col-sm-6 col-xs-12">
                 <div class="form-group">
                     <label for="telefone">Celular</label>
-                    <input type="text" name="telefone" class="form-control phone" value="{{old('telefone')}}" placeholder="Telefone...">
+                    <input type="text" name="telefone" class="form-control phone" value="{{old('telefone')}}" placeholder="(99)99999-9999">
                     @if ($errors->has('telefone'))
                         <span class="text-danger">
                             {{ $errors->first('telefone') }}
@@ -196,21 +195,32 @@
 @push('scripts')
 <script src="{{asset('js/jquery.min.js')}}"></script>
 <script>
-$(".tipo_documento").change(function() {
-    var doc = $('.tipo_documento').val();
+$(document).ready(function() {
+  limitaCampo();
+});
+
+$("#tipo_documento").change(function() {
+    var doc = $('#tipo_documento').val();
+    $('#documento').val("");
     if(doc == "CPF"){
-        $('.num_doc').mask('000.000.000-00', {reverse: true}); 
+        $('#documento').mask('000.000.000-00', {reverse: true}); 
     }
     if(doc == "CNPJ"){
-       $('.num_doc').mask('00.000.000/0000-00', {reverse: true}); 
+       $('#documento').mask('00.000.000/0000-00', {reverse: true}); 
     }
-    if(doc == "RG") {
-        $('.num_doc').mask('00.000.000-0', {reverse: true}); 
-    }
-    
-
-    
 });
+function limitaCampo(){
+    var documento = $('#tipo_documento').val();
+    if(documento == 'CPF'){
+        $('#documento').mask('000.000.000-00', {reverse: true}); 
+        $('#documento').attr('maxlength', 14);
+    }
+    if(documento == 'CNPJ'){
+        $('#documento').mask('00.000.000/0000-00', {reverse: true}); 
+        $('#documento').attr('maxlength', 18);
+    }
+    
+}
 </script>
 @endpush
 @stop

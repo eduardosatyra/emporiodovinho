@@ -2,7 +2,7 @@
 @section('conteudo')
 <div class="row">
 		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-			<h3>Editar Usuário: {{ $usuario->name }}</h3>
+			<h3><strong>Editar Usuário:</strong> {{ $usuario->name }}</h3>
 			{!!Form::model($usuario, ['method' => 'PATCH', 'route'=>['usuario.update', $usuario->id]]) !!}
             {{Form::token()}}
  			<div class="form-group">

@@ -25,7 +25,7 @@
 							<td>{{$det->nome}}</td>
 							<td>{{$det->quantidade}}</td>
 							<td>{{$det->motivo}}</td>
-							<td>{{$saida->data_hora}}</td>
+							<td><?php echo date('d/m/Y H:i:s', strtotime($saida->data_hora)); ?></td>
 						</tr>
 						@endforeach
 					</tbody>

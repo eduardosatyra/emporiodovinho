@@ -12,7 +12,7 @@ class Categoria extends Model
 	public $timestamps = false;
 	protected $fillable = [
 
-	'nome','descricao','condicao'
+	'nome','condicao'
 
 	];
 
